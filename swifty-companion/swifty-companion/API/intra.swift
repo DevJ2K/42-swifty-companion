@@ -6,8 +6,6 @@
 //
 
 import Foundation
-import OAuth2
-
 
 // OAuth2Manager.swift
 //import OAuthSwift
@@ -43,7 +41,7 @@ func makeRequestsWithToken(token: Token) async {
 func getEnvVariables() -> [String: AnyObject]? {
     var propertyListFormat =  PropertyListSerialization.PropertyListFormat.xml //Format of the Property List.
     var plistData: [String: AnyObject] = [:] //Our data
-    guard let plistPath: String = Bundle.main.path(forResource: ".env", ofType: "plist") else {
+    guard let plistPath: String = Bundle.main.path(forResource: "env", ofType: "plist") else {
         print("File not found !")
         return nil
     } //the path of the data
