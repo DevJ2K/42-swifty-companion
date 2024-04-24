@@ -18,21 +18,41 @@ struct Token: Decodable {
     let created_at: Int
 }
 
-struct AchievementsList: Decodable
+struct UsersList: Codable
 {
-//    let
+    var results: [UserListItem]
+}
+
+struct UserListItem: Codable {
+    var id: Int
+    var login: String
+    var url: String
+}
+
+
+func fetchUserList(token: Token, login: String) async -> [UserListItem] {
+    guard let url = URL(string: "https://api.intra.42.fr/v2/users?range%5Blogin%5D=\(login.lowercased()),\(login.lowercased())z") else { return [] }
+    var request = URLRequest(url: url)
+    request.setValue("Bearer \(token.access_token)", forHTTPHeaderField: "Authorization")
+    do {
+        let (data, _) = try await URLSession.shared.data(for: request)
+        let dataDecode = try JSONDecoder().decode([UserListItem].self, from: data)
+    } catch {
+        print("Error while fetching users : \(error)")
+    }
+    return []
 }
 
 func makeRequestsWithToken(token: Token) async {
-    guard let url = URL(string: "https://api.intra.42.fr/v2/achievements_users") else { return }
+    guard let url = URL(string: "https://api.intra.42.fr/v2/users?range%5Blogin%5D=ale,alez") else { return }
     var request = URLRequest(url: url)
     request.setValue("Bearer \(token.access_token)", forHTTPHeaderField: "Authorization")
     do {
         let (data, _) = try await URLSession.shared.data(for: request)
         let decoder = JSONDecoder()
         print(data)
-//        let token = try decoder.decode(Token.self, from: data)
-//        print(token)
+        let dataDecode = try decoder.decode([UserListItem].self, from: data)
+        print(dataDecode)
     } catch {
         print("Failed in URLSession : \(error)")
     }
@@ -55,6 +75,7 @@ func getEnvVariables() -> [String: AnyObject]? {
         return nil
     }
 }
+
 
 func handleIntraAuth() async {
     // Create OAuth2 client
@@ -85,5 +106,42 @@ func handleIntraAuth() async {
         await makeRequestsWithToken(token: token)
     } catch {
         print("Failed in URLSession : \(error)")
+    }
+}
+
+
+class IntraAPI: ObservableObject {
+    @Published var token: Token?
+    
+    func getToken() async {
+        // Create OAuth2 client
+        let envVariable = getEnvVariables()
+        guard let clientKey = envVariable?["UID"] else {
+            print("404: Client key not found !")
+            return
+        }
+        guard let clientSecret = envVariable?["SECRET"] else {
+            print("404: Secret key not found !")
+            return
+        }
+
+        guard let url = URL(string: "https://api.intra.42.fr/oauth/token") else {
+            print("Unavailable URL.")
+            return
+        }
+        let body = "grant_type=client_credentials&client_id=\(clientKey)&client_secret=\(clientSecret)"
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = body.data(using: String.Encoding.utf8)
+        do {
+            let (data, _) = try await URLSession.shared.data(for: request)
+            let decoder = JSONDecoder()
+            token = try decoder.decode(Token.self, from: data)
+            print(token ?? "Unexist token.")
+            await makeRequestsWithToken(token: token!)
+        } catch {
+            print("Failed in URLSession : \(error)")
+        }
     }
 }
