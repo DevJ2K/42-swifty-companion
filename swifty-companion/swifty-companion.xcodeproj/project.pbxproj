@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E40C928B2BD8FFE50066B186 /* env.plist in Resources */ = {isa = PBXBuildFile; fileRef = E40C928A2BD8FFE50066B186 /* env.plist */; };
 		E42BF2872BD648D6003DCEAA /* swifty_companionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42BF2862BD648D6003DCEAA /* swifty_companionApp.swift */; };
 		E42BF2892BD648D6003DCEAA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42BF2882BD648D6003DCEAA /* ContentView.swift */; };
 		E42BF28B2BD648D7003DCEAA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E42BF28A2BD648D7003DCEAA /* Assets.xcassets */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E40C928A2BD8FFE50066B186 /* env.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = env.plist; sourceTree = "<group>"; };
 		E42BF2832BD648D6003DCEAA /* swifty-companion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "swifty-companion.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E42BF2862BD648D6003DCEAA /* swifty_companionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swifty_companionApp.swift; sourceTree = "<group>"; };
 		E42BF2882BD648D6003DCEAA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -39,6 +41,7 @@
 		E42BF27A2BD648D6003DCEAA = {
 			isa = PBXGroup;
 			children = (
+				E40C928A2BD8FFE50066B186 /* env.plist */,
 				E42BF2852BD648D6003DCEAA /* swifty-companion */,
 				E42BF2842BD648D6003DCEAA /* Products */,
 			);
@@ -153,6 +156,7 @@
 			files = (
 				E42BF28E2BD648D7003DCEAA /* Preview Assets.xcassets in Resources */,
 				E42BF28B2BD648D7003DCEAA /* Assets.xcassets in Resources */,
+				E40C928B2BD8FFE50066B186 /* env.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
