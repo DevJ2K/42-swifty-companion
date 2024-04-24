@@ -43,8 +43,11 @@ func makeRequestsWithToken(token: Token) async {
 func getEnvVariables() -> [String: AnyObject]? {
     var propertyListFormat =  PropertyListSerialization.PropertyListFormat.xml //Format of the Property List.
     var plistData: [String: AnyObject] = [:] //Our data
-    let plistPath: String? = Bundle.main.path(forResource: "env", ofType: "plist")! //the path of the data
-    let plistXML = FileManager.default.contents(atPath: plistPath!)!
+    guard let plistPath: String = Bundle.main.path(forResource: ".env", ofType: "plist") else {
+        print("File not found !")
+        return nil
+    } //the path of the data
+    let plistXML = FileManager.default.contents(atPath: plistPath)!
     do {//convert the data to a dictionary and handle errors.
         plistData = try PropertyListSerialization.propertyList(from: plistXML, options: .mutableContainersAndLeaves, format: &propertyListFormat) as! [String:AnyObject]
         return plistData

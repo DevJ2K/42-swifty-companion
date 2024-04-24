@@ -11,11 +11,8 @@
 		E42BF2892BD648D6003DCEAA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42BF2882BD648D6003DCEAA /* ContentView.swift */; };
 		E42BF28B2BD648D7003DCEAA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E42BF28A2BD648D7003DCEAA /* Assets.xcassets */; };
 		E42BF28E2BD648D7003DCEAA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E42BF28D2BD648D7003DCEAA /* Preview Assets.xcassets */; };
-		E42BF2962BD64C6A003DCEAA /* OAuth2 in Frameworks */ = {isa = PBXBuildFile; productRef = E42BF2952BD64C6A003DCEAA /* OAuth2 */; };
 		E42BF2992BD64D28003DCEAA /* intra.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42BF2982BD64D28003DCEAA /* intra.swift */; };
 		E42BF29C2BD65A8E003DCEAA /* ProfilePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42BF29B2BD65A8E003DCEAA /* ProfilePage.swift */; };
-		E42BF2A22BD6E795003DCEAA /* OAuthSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E42BF2A12BD6E795003DCEAA /* OAuthSwift */; };
-		E42BF2A42BD795F3003DCEAA /* env.plist in Resources */ = {isa = PBXBuildFile; fileRef = E42BF2A32BD795F3003DCEAA /* env.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,7 +23,6 @@
 		E42BF28D2BD648D7003DCEAA /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		E42BF2982BD64D28003DCEAA /* intra.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = intra.swift; sourceTree = "<group>"; };
 		E42BF29B2BD65A8E003DCEAA /* ProfilePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePage.swift; sourceTree = "<group>"; };
-		E42BF2A32BD795F3003DCEAA /* env.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = env.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -34,8 +30,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E42BF2A22BD6E795003DCEAA /* OAuthSwift in Frameworks */,
-				E42BF2962BD64C6A003DCEAA /* OAuth2 in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -45,7 +39,6 @@
 		E42BF27A2BD648D6003DCEAA = {
 			isa = PBXGroup;
 			children = (
-				E42BF2A32BD795F3003DCEAA /* env.plist */,
 				E42BF2852BD648D6003DCEAA /* swifty-companion */,
 				E42BF2842BD648D6003DCEAA /* Products */,
 			);
@@ -113,8 +106,6 @@
 			);
 			name = "swifty-companion";
 			packageProductDependencies = (
-				E42BF2952BD64C6A003DCEAA /* OAuth2 */,
-				E42BF2A12BD6E795003DCEAA /* OAuthSwift */,
 			);
 			productName = "swifty-companion";
 			productReference = E42BF2832BD648D6003DCEAA /* swifty-companion.app */;
@@ -145,9 +136,6 @@
 			);
 			mainGroup = E42BF27A2BD648D6003DCEAA;
 			packageReferences = (
-				E42BF2942BD64C6A003DCEAA /* XCRemoteSwiftPackageReference "OAuth2" */,
-				E42BF29D2BD6E74F003DCEAA /* XCRemoteSwiftPackageReference "Auth0" */,
-				E42BF2A02BD6E795003DCEAA /* XCRemoteSwiftPackageReference "OAuthSwift" */,
 			);
 			productRefGroup = E42BF2842BD648D6003DCEAA /* Products */;
 			projectDirPath = "";
@@ -165,7 +153,6 @@
 			files = (
 				E42BF28E2BD648D7003DCEAA /* Preview Assets.xcassets in Resources */,
 				E42BF28B2BD648D7003DCEAA /* Assets.xcassets in Resources */,
-				E42BF2A42BD795F3003DCEAA /* env.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,46 +374,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		E42BF2942BD64C6A003DCEAA /* XCRemoteSwiftPackageReference "OAuth2" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/p2/OAuth2.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.3.5;
-			};
-		};
-		E42BF29D2BD6E74F003DCEAA /* XCRemoteSwiftPackageReference "Auth0" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/auth0/Auth0.swift";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.7.0;
-			};
-		};
-		E42BF2A02BD6E795003DCEAA /* XCRemoteSwiftPackageReference "OAuthSwift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/OAuthSwift/OAuthSwift.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.2.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		E42BF2952BD64C6A003DCEAA /* OAuth2 */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E42BF2942BD64C6A003DCEAA /* XCRemoteSwiftPackageReference "OAuth2" */;
-			productName = OAuth2;
-		};
-		E42BF2A12BD6E795003DCEAA /* OAuthSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E42BF2A02BD6E795003DCEAA /* XCRemoteSwiftPackageReference "OAuthSwift" */;
-			productName = OAuthSwift;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E42BF27B2BD648D6003DCEAA /* Project object */;
 }
