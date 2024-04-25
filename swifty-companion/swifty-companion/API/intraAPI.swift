@@ -18,6 +18,15 @@ struct Token: Decodable {
     let created_at: Int
 }
 
+struct TokenInfo: Decodable {
+    let expires_in_seconds: Int
+}
+
+struct EnvKey {
+    let uid: String
+    let secret: String
+}
+
 struct UsersList: Codable
 {
     var results: [UserListItem]
@@ -58,17 +67,22 @@ func makeRequestsWithToken(token: Token) async {
     }
 }
 
-func getEnvVariables() -> [String: AnyObject]? {
+func getEnvKey() -> EnvKey? {
     var propertyListFormat =  PropertyListSerialization.PropertyListFormat.xml //Format of the Property List.
-    var plistData: [String: AnyObject] = [:] //Our data
+    var plistData: [String: AnyObject] = [:]
     guard let plistPath: String = Bundle.main.path(forResource: "env", ofType: "plist") else {
         print("File not found !")
         return nil
-    } //the path of the data
+    }
     let plistXML = FileManager.default.contents(atPath: plistPath)!
-    do {//convert the data to a dictionary and handle errors.
+    do {
         plistData = try PropertyListSerialization.propertyList(from: plistXML, options: .mutableContainersAndLeaves, format: &propertyListFormat) as! [String:AnyObject]
-        return plistData
+        
+        guard let uid = plistData["UID"] else { return nil }
+        guard let secret = plistData["SECRET"] else { return nil }
+        
+        var envKey = EnvKey(uid: uid as! String, secret: secret as! String)
+        return envKey
 
     } catch {
         print("Error reading plist: \(error), format: \(propertyListFormat)")
@@ -76,52 +90,14 @@ func getEnvVariables() -> [String: AnyObject]? {
     }
 }
 
-
-func handleIntraAuth() async {
-    // Create OAuth2 client
-    let envVariable = getEnvVariables()
-    guard let clientKey = envVariable?["UID"] else {
-        print("404: Client key not found !")
-        return
-    }
-    guard let clientSecret = envVariable?["SECRET"] else {
-        print("404: Secret key not found !")
-        return
-    }
-
-    guard let url = URL(string: "https://api.intra.42.fr/oauth/token") else {
-        print("Unavailable URL.")
-        return
-    }
-    let body = "grant_type=client_credentials&client_id=\(clientKey)&client_secret=\(clientSecret)"
-
-    var request = URLRequest(url: url)
-    request.httpMethod = "POST"
-    request.httpBody = body.data(using: String.Encoding.utf8)
-    do {
-        let (data, _) = try await URLSession.shared.data(for: request)
-        let decoder = JSONDecoder()
-        let token = try decoder.decode(Token.self, from: data)
-        print(token)
-        await makeRequestsWithToken(token: token)
-    } catch {
-        print("Failed in URLSession : \(error)")
-    }
-}
-
-
 class IntraAPI: ObservableObject {
     @Published var token: Token?
     
+    static let shared = IntraAPI()
+    
     func getToken() async {
-        // Create OAuth2 client
-        let envVariable = getEnvVariables()
-        guard let clientKey = envVariable?["UID"] else {
-            print("404: Client key not found !")
-            return
-        }
-        guard let clientSecret = envVariable?["SECRET"] else {
-            print("404: Secret key not found !")
+        guard let envKey = getEnvKey() else {
+            print("404: Env key not found.")
             return
         }
 
@@ -129,7 +105,7 @@ class IntraAPI: ObservableObject {
             print("Unavailable URL.")
             return
         }
-        let body = "grant_type=client_credentials&client_id=\(clientKey)&client_secret=\(clientSecret)"
+        let body = "grant_type=client_credentials&client_id=\(envKey.uid)&client_secret=\(envKey.secret)"
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -137,11 +113,41 @@ class IntraAPI: ObservableObject {
         do {
             let (data, _) = try await URLSession.shared.data(for: request)
             let decoder = JSONDecoder()
-            token = try decoder.decode(Token.self, from: data)
-            print(token ?? "Unexist token.")
-            await makeRequestsWithToken(token: token!)
+            let tmp = try decoder.decode(Token.self, from: data)
+            DispatchQueue.main.async {
+                IntraAPI.shared.token = tmp
+                print(IntraAPI.shared.token ?? "Unexist token.")
+            }
+//            await makeRequestsWithToken(token: token!)
         } catch {
-            print("Failed in URLSession : \(error)")
+            print("Failed while fetching token : \(error)")
+        }
+    }
+    
+    func checkTokenExpirationTime() async {
+        if (token == nil) {
+            print("The token is not defined.")
+            Task {
+                await getToken()
+            }
+        } else {
+            guard let url = URL(string: "https://api.intra.42.fr/oauth/token/info") else { return }
+            var request = URLRequest(url: url)
+            request.setValue("Bearer \(token!.access_token)", forHTTPHeaderField: "Authorization")
+            do {
+                let (data, _) = try await URLSession.shared.data(for: request)
+                let infoToken = try JSONDecoder().decode(TokenInfo.self, from: data)
+
+                if (infoToken.expires_in_seconds <= 120) { // Only 2 minutes left
+                    print("The token will soon expired... Time left : \(infoToken.expires_in_seconds)")
+                    await getToken()
+                } else {
+                    print("Everything looks good ! Time left : \(infoToken.expires_in_seconds)")
+                }
+            } catch {
+                print("Failed during fetch of token info : \(error)")
+                await getToken()
+            }
         }
     }
 }

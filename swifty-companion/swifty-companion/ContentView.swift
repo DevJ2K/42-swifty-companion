@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var intraAPI = IntraAPI.shared
     var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -16,8 +17,15 @@ struct ContentView: View {
             Text("Hello, world!")
             Button("Login to intra") {
                 Task {
-                    await handleIntraAuth()
+//                    await intraAPI.getToken()
+                    await intraAPI.checkTokenExpirationTime()
                 }
+            }
+        }
+        .onAppear {
+            Task {
+//                await intraAPI.getToken()
+                await intraAPI.checkTokenExpirationTime()
             }
         }
         .padding()
