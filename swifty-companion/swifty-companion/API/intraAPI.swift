@@ -81,7 +81,7 @@ func getEnvKey() -> EnvKey? {
         guard let uid = plistData["UID"] else { return nil }
         guard let secret = plistData["SECRET"] else { return nil }
         
-        var envKey = EnvKey(uid: uid as! String, secret: secret as! String)
+        let envKey = EnvKey(uid: uid as! String, secret: secret as! String)
         return envKey
 
     } catch {
@@ -92,6 +92,7 @@ func getEnvKey() -> EnvKey? {
 
 class IntraAPI: ObservableObject {
     @Published var token: Token?
+    @Published var isFetchingToken = false
     
     static let shared = IntraAPI()
     
