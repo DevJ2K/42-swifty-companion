@@ -10,6 +10,9 @@
 		E40C928B2BD8FFE50066B186 /* env.plist in Resources */ = {isa = PBXBuildFile; fileRef = E40C928A2BD8FFE50066B186 /* env.plist */; };
 		E40C928D2BDF95040066B186 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40C928C2BDF95040066B186 /* ProfileView.swift */; };
 		E40C92902BDF95790066B186 /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40C928F2BDF95790066B186 /* SearchCell.swift */; };
+		E40C92932BDF9C110066B186 /* UserStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40C92922BDF9C110066B186 /* UserStruct.swift */; };
+		E40C92952BDFA1330066B186 /* UsersStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40C92942BDFA1330066B186 /* UsersStruct.swift */; };
+		E40C92972BDFA1F30066B186 /* TokenStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40C92962BDFA1F30066B186 /* TokenStruct.swift */; };
 		E42BF2872BD648D6003DCEAA /* swifty_companionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42BF2862BD648D6003DCEAA /* swifty_companionApp.swift */; };
 		E42BF2892BD648D6003DCEAA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42BF2882BD648D6003DCEAA /* ContentView.swift */; };
 		E42BF28B2BD648D7003DCEAA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E42BF28A2BD648D7003DCEAA /* Assets.xcassets */; };
@@ -21,6 +24,9 @@
 		E40C928A2BD8FFE50066B186 /* env.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = env.plist; sourceTree = "<group>"; };
 		E40C928C2BDF95040066B186 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		E40C928F2BDF95790066B186 /* SearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
+		E40C92922BDF9C110066B186 /* UserStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStruct.swift; sourceTree = "<group>"; };
+		E40C92942BDFA1330066B186 /* UsersStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersStruct.swift; sourceTree = "<group>"; };
+		E40C92962BDFA1F30066B186 /* TokenStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStruct.swift; sourceTree = "<group>"; };
 		E42BF2832BD648D6003DCEAA /* swifty-companion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "swifty-companion.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E42BF2862BD648D6003DCEAA /* swifty_companionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swifty_companionApp.swift; sourceTree = "<group>"; };
 		E42BF2882BD648D6003DCEAA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -48,6 +54,16 @@
 			path = Widgets;
 			sourceTree = "<group>";
 		};
+		E40C92912BDF9BFC0066B186 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				E40C92922BDF9C110066B186 /* UserStruct.swift */,
+				E40C92942BDFA1330066B186 /* UsersStruct.swift */,
+				E40C92962BDFA1F30066B186 /* TokenStruct.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
 		E42BF27A2BD648D6003DCEAA = {
 			isa = PBXGroup;
 			children = (
@@ -68,6 +84,7 @@
 		E42BF2852BD648D6003DCEAA /* swifty-companion */ = {
 			isa = PBXGroup;
 			children = (
+				E40C92912BDF9BFC0066B186 /* Data */,
 				E40C928E2BDF952E0066B186 /* Widgets */,
 				E42BF29A2BD65A7B003DCEAA /* Views */,
 				E42BF2972BD64C7A003DCEAA /* API */,
@@ -180,8 +197,11 @@
 			files = (
 				E40C928D2BDF95040066B186 /* ProfileView.swift in Sources */,
 				E40C92902BDF95790066B186 /* SearchCell.swift in Sources */,
+				E40C92972BDFA1F30066B186 /* TokenStruct.swift in Sources */,
 				E42BF2992BD64D28003DCEAA /* intraAPI.swift in Sources */,
 				E42BF2892BD648D6003DCEAA /* ContentView.swift in Sources */,
+				E40C92932BDF9C110066B186 /* UserStruct.swift in Sources */,
+				E40C92952BDFA1330066B186 /* UsersStruct.swift in Sources */,
 				E42BF2872BD648D6003DCEAA /* swifty_companionApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

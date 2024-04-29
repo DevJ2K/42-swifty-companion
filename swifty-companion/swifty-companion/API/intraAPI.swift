@@ -10,34 +10,10 @@ import Foundation
 // OAuth2Manager.swift
 //import OAuthSwift
 
-struct Token: Decodable {
-    let access_token: String
-    let token_type: String
-    let expires_in: Int
-    let scope: String
-    let created_at: Int
-}
-
-struct TokenInfo: Decodable {
-    let expires_in_seconds: Int
-}
-
 struct EnvKey {
     let uid: String
     let secret: String
 }
-
-struct UsersList: Codable
-{
-    var results: [UserListItem]
-}
-
-struct UserListItem: Codable {
-    var id: Int
-    var login: String
-    var url: String
-}
-
 
 func fetchUserList(token: Token, login: String) async -> [UserListItem] {
     guard let url = URL(string: "https://api.intra.42.fr/v2/users?range%5Blogin%5D=\(login.lowercased()),\(login.lowercased())z") else { return [] }
