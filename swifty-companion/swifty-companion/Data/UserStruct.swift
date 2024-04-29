@@ -20,6 +20,7 @@ struct User: Codable, Identifiable {
     let wallet: Int
     let projects_users: [Project_user]
     let cursus_users: [Cursus_user]
+    let coalitions: [Coalition]?
 }
 
 struct User_image: Codable {
@@ -64,4 +65,14 @@ struct Skill: Codable {
     let id: Int
     let name: String
     let level: Double
+}
+
+struct Coalition: Codable, Identifiable {
+    let id: Int
+    let name: String
+    let slug: String
+    let image_url: String
+    let cover_url: String
+    let color: String
+    let score: Int
 }
