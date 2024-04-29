@@ -16,9 +16,22 @@ struct User: Codable, Identifiable {
     let pool_month: String
     let pool_year: String
     let location: String?
+    let image: User_image
     let wallet: Int
     let projects_users: [Project_user]
     let cursus_users: [Cursus_user]
+}
+
+struct User_image: Codable {
+    let link: String
+    let versions: User_image_version
+}
+
+struct User_image_version: Codable {
+    let large: String
+    let medium: String
+    let small: String
+    let micro: String
 }
 
 struct Project_user: Codable, Identifiable {

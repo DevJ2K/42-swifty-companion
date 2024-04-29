@@ -36,7 +36,7 @@ struct ContentView: View {
                 
                 ScrollView {
                     ForEach(0 ..< 20, id: \.self) { i in
-                            SearchCell()
+//                            SearchCell()
                     }
                 }
 //                .background(.red)

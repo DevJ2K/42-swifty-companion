@@ -23,5 +23,6 @@ struct UserListItem: Identifiable, Codable {
     let pool_month: String
     let pool_year: String
     let location: String?
+    let image: User_image
     let wallet: Int
 }
