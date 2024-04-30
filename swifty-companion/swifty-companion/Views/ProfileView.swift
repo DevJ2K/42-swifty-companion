@@ -11,7 +11,20 @@ struct ProfileView: View {
     var user: User
     @State private var tabSelection = 0
     
-    
+    func getLocationColor(location: String) -> Color {
+        if (location.starts(with: "bess")) {
+            return .cyan
+        } else if (location.starts(with: "paul")) {
+            return .orange
+        } else if (location.starts(with: "made")) {
+            return .indigo
+        } else if (location.starts(with: "Unavailable")) {
+            return .gray
+        } else {
+            return .green
+        }
+    }
+
     var body: some View {
         ZStack {
             if (user.coalitions != nil) {
@@ -60,30 +73,12 @@ struct ProfileView: View {
                                 .fontWeight(.semibold)
                                 .background(
                                     RoundedRectangle(cornerRadius: 16)
-                                        .fill(.black.opacity(0.8))
+                                        .fill(getLocationColor(location: user.location ?? "Unavailable"))
                                 )
                         }
                     }
                 }
-                HStack {
-                    VStack {
-                        Text("Wallets")
-                        Text("\(user.wallet)₳")
-                    }
-                    Rectangle()
-                        .frame(width: 1, height: 30)
-                    VStack {
-                        Text("Evaluations")
-                        Text("\(user.correction_point)")
-                    }
-                    Rectangle()
-                        .frame(width: 1, height: 30)
-                    VStack {
-                        Text("Projects")
-                        Text("\(user.projects_users.count)")
-                    }
-                }
-                .background(.blue)
+                UserStatDash(wallets: user.wallet, correction_point: user.correction_point, projects_completed: user.projects_users.count)
                 ZStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: 8)
                         .fill(.gray)
