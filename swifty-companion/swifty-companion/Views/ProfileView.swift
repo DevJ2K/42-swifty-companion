@@ -9,12 +9,21 @@ import SwiftUI
 
 struct ProfileView: View {
     var user: User
-
+    @State private var tabSelection = 0
+    
     
     var body: some View {
         ZStack {
             if (user.coalitions != nil) {
-                AsyncImage(url: URL(string: user.coalitions![user.coalitions!.count - 1].cover_url)) { image in image
+//                Color.black
+//                    .scaledToFill()
+//                    .ignoresSafeArea(.all)
+                AsyncImage(url: URL(string: user.coalitions![user.coalitions!.count - 1].cover_url)) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .ignoresSafeArea(.all)
+                        .opacity(0.7)
                 } placeholder: {
                     ProgressView()
                         .frame(width: 70, height: 70)
@@ -30,19 +39,18 @@ struct ProfileView: View {
                     AsyncImage(url: URL(string: user.image.link)) { image in
                         image
                             .resizable()
-                            .frame(width: 150, height: 150)
                             .clipShape(Circle())
                     } placeholder: {
                         ProgressView()
-                            .frame(width: 150, height: 150)
                     }
+                    .frame(width: 100, height: 100)
                     VStack {
                         VStack(alignment: .leading) {
                             Text(user.login)
                                 .fontWeight(.bold)
                                 .foregroundStyle(.white)
                                 .font(.title3)
-                            Text("\(user.pool_month.capitalized) \(user.pool_year)")
+                            Text(user.email)
                                 .fontWeight(.semibold)
                                 .foregroundStyle(.white)
                                 .opacity(0.8)
@@ -71,15 +79,63 @@ struct ProfileView: View {
                     Rectangle()
                         .frame(width: 1, height: 30)
                     VStack {
-                        Text("Projects validated")
+                        Text("Projects")
                         Text("\(user.projects_users.count)")
                     }
                 }
                 .background(.blue)
+                ZStack(alignment: .leading) {
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(.gray)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(.white, lineWidth: 1)
+                        )
+                        .frame(height: 32)
+                        .padding(.horizontal)
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(.orange)
+                        .frame(width: UIScreen.main.bounds.width * 0.5, height: 32)
+                        .padding(.horizontal)
+                    
+                    ZStack(alignment: .center) {
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(.black.opacity(0))
+                            .frame(height: 32)
+                            .padding(.horizontal)
+                        Text("Level 11 - 60%")
+                            .foregroundStyle(.white)
+                    }
+                }
+                Picker("", selection: $tabSelection) {
+                    Text("Projects").tag(0)
+                        .font(.title)
+                    Text("Skills").tag(1)
+                        .font(.title)
+                }
+//                .background(.gray.opacity(0.8))
+                .frame(width: 270, height: 50)
+                .pickerStyle(SegmentedPickerStyle())
+                
+                ScrollView {
+                    
+                }
+                .background(.white.opacity(0.5))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .frame(height: 300)
+                .padding(.horizontal)
+                
+                
+                
+                //                .pickerStyle(.segmented)
             }
-            .background(.red)
+//            .fixedSize()
+            .frame(width: UIScreen.main.bounds.width)
             
+//            .background(.red)
+//            .padding()
         }
+        .background(.black)
     }
 }
 
