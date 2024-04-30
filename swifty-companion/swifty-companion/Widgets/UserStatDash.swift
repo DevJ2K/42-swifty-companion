@@ -17,10 +17,11 @@ struct UserStatDash: View {
             Spacer()
             VStack(spacing: 8) {
                 HStack(spacing: 4) {
-                    Image(systemName: "wind")
+                    Image(systemName: "australsign")
                         .font(.system(size: 14))
                         .opacity(0.8)
-                    Text("Wind")
+                    Text("Wallet")
+                        .font(.system(size: 13, weight: .light))
                 }
                 Text("\(wallets)")
                     .font(.system(size: 14, weight: .semibold, design: .rounded))
@@ -32,12 +33,13 @@ struct UserStatDash: View {
                 .padding(.vertical)
             VStack(spacing: 8) {
                 HStack(spacing: 4) {
-                    Image(systemName: "wind")
-                        .font(.system(size: 14))
+                    Image(systemName: "person.2")
+                        .font(.system(size: 13))
                         .opacity(0.8)
-                    Text("Wind")
+                    Text("Evaluations")
+                        .font(.system(size: 13, weight: .light))
                 }
-                Text("\(wallets)")
+                Text("\(correction_point)")
                     .font(.system(size: 14, weight: .semibold, design: .rounded))
                     
             }
@@ -47,12 +49,13 @@ struct UserStatDash: View {
                 .padding(.vertical)
             VStack(spacing: 8) {
                 HStack(spacing: 4) {
-                    Image(systemName: "wind")
+                    Image(systemName: "pencil.and.list.clipboard")
                         .font(.system(size: 14))
                         .opacity(0.8)
-                    Text("Wind")
+                    Text("Projects")
+                        .font(.system(size: 13, weight: .light))
                 }
-                Text("\(wallets)")
+                Text("\(projects_completed)")
                     .font(.system(size: 14, weight: .semibold, design: .rounded))
                     
             }
