@@ -70,8 +70,8 @@ struct UserStatDash: View {
             }
             .frame(maxWidth: .infinity)
         }
-        .frame(height: 90)
-        .background(.gray.opacity(0.5))
+        .frame(height: 80)
+        .background(.gray.opacity(0.4))
         .clipShape(RoundedRectangle(cornerRadius: 20))
         .padding()
     }
