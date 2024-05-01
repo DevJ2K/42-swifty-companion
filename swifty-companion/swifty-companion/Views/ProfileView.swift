@@ -48,58 +48,59 @@ struct ProfileView: View {
             }
             
             VStack {
-                HStack {
+                // User Header
+                HStack(alignment: .bottom) {
                     AsyncImage(url: URL(string: user.image.link)) { image in
                         image
                             .resizable()
                             .clipShape(Circle())
+                            .shadow(color: .white.opacity(0.3), radius: 3, x: 1, y: 1)
                     } placeholder: {
                         ProgressView()
                     }
                     .frame(width: 100, height: 100)
                     VStack {
-                        VStack(alignment: .leading) {
+                        VStack(alignment: .leading, spacing: 0) {
                             Text(user.login)
                                 .fontWeight(.bold)
                                 .foregroundStyle(.white)
-                                .font(.title3)
+                                .font(.title2)
+                                .shadow(color: .white.opacity(0.2), radius: 4, x: 1, y: 1)
                             Text(user.email)
-                                .fontWeight(.semibold)
+                                .fontWeight(.light)
                                 .foregroundStyle(.white)
                                 .opacity(0.8)
                             Text(user.location ?? "Unavailable")
-                                .padding(.horizontal)
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 2)
                                 .foregroundStyle(.white)
                                 .fontWeight(.semibold)
                                 .background(
                                     RoundedRectangle(cornerRadius: 16)
                                         .fill(getLocationColor(location: user.location ?? "Unavailable"))
+                                        .shadow(color: .black.opacity(0.5), radius: 4, x: 1, y: 1)
                                 )
+                                .padding(.vertical, 4)
                         }
                     }
                     Spacer()
                 }
                 .padding(.horizontal)
-                UserStatDash(wallets: user.wallet, correction_point: user.correction_point, projects_completed: user.projects_users.count)
+                
                 // Level Bar
                 UserLevelBar(level: user.cursus_users[user.cursus_users.count - 1].level)
-                //                Picker("", selection: $tabSelection) {
-                //                    Text("Projects").tag(0)
-                //                        .font(.title)
-                //                        .foregroundStyle(.white)
-                //                    Text("Skills").tag(1)
-                //                        .font(.title)
-                //                        .foregroundStyle(.white)
-                //                }
-                //                .frame(height: 50)
-                //                .padding(.horizontal)
-                //                .pickerStyle(SegmentedPickerStyle())
-                //                .colorMultiply(.white)
+                    .padding(.vertical, 6)
+        
+                // User Stat Dash
+                UserStatDash(wallets: user.wallet, correction_point: user.correction_point, projects_completed: user.projects_users.count)
+                    .padding()
+
                 
+                // Custom Picker
                 HStack {
                     Text("Projects")
                         .fontWeight(.bold)
-                        .padding(.vertical, 6)
+                        .padding(.vertical, 4)
                         .frame(maxWidth: .infinity)
                         .background(
                             ZStack {
@@ -117,7 +118,7 @@ struct ProfileView: View {
                         }
                     Text("Skills")
                         .fontWeight(.bold)
-                        .padding(.vertical, 6)
+                        .padding(.vertical, 4)
                         .padding(.horizontal)
                         .frame(maxWidth: .infinity)
                         .background(
@@ -142,6 +143,7 @@ struct ProfileView: View {
                     RoundedRectangle(cornerRadius: 14)
                         .fill(.white.opacity(0.4)))
                 .padding(.horizontal)
+//                .padding(.vertical)
                 
                 
                 
@@ -165,43 +167,45 @@ struct ProfileView: View {
     }
 }
 
-#Preview {
-    ProfileView(user: User(id: 1, email: "tajavon@student.42.fr", login: "tajavon", phone: "hidden", correction_point: 667, pool_month: "september", pool_year: "2023", location: "made-f0Br5s3", image: User_image(link: "https://cdn.intra.42.fr/users/75d7dbdc6a8da11f1a4fc38f0a641caf/tajavon.jpg", versions: User_image_version(large: "https://cdn.intra.42.fr/users/6ba29f06e26937c2fe7c6f193d22212d/large_tajavon.jpg", medium: "https://cdn.intra.42.fr/users/9db1bddfd3b1ad6cc7828e46f6d55af6/medium_tajavon.jpg", small: "https://cdn.intra.42.fr/users/4c23a85209107ba6f6c6e0f3baeacd82/small_tajavon.jpg", micro: "https://cdn.intra.42.fr/users/efe404a25dc50e94739d9d661d704606/micro_tajavon.jpg")), wallet: 1406, projects_users: [Project_user(id: 3647453, occurrence: 0, final_mark: 100, status: "finished", validated: true, project: Project(id: 2360, name: "Mobile - 5 - Manage data and display", slug: "mobile-5-manage-data-and-display"), marked_at: "2024-04-20T16:24:42.913Z", marked: true, retriable_at: "2024-04-20T16:24:43.318Z", created_at: "2024-04-20T12:50:19.512Z", updated_at: "2024-04-22T13:15:48.627Z")], cursus_users: [Cursus_user(grade: nil, level: 9.57, skills: [Skill(id: 4, name: "Unix", level: 10.83)]), Cursus_user(grade: "Member", level: 11.6, skills: [Skill(id: 3, name: "Rigor", level: 7.9), Skill(id: 6, name: "Web", level: 7.03), Skill(id: 10, name: "Network & system administration", level: 7.0), Skill(id: 17, name: "Object-oriented programming", level: 6.16), Skill(id: 2, name: "Imperative programming", level: 5.07)])], coalitions: [Coalition(id: 107, name: "La Heap", slug: "la-heap", image_url: "https://cdn.intra.42.fr/coalition/image/107/heap-logo.svg", cover_url: "https://cdn.intra.42.fr/coalition/cover/107/heap-bg-option5.jpg", color: "#00B333", score: 0), Coalition(id: 47, name: "The Order", slug: "42cursus-paris-the-order", image_url: "https://cdn.intra.42.fr/coalition/image/47/order.svg", cover_url: "https://cdn.intra.42.fr/coalition/cover/47/order_background.jpg", color: "#FF6950", score: 505107)]))
-}
-
 struct UserLevelBar: View {
     var level: Double
     
     var body: some View {
         ZStack(alignment: .leading) {
             RoundedRectangle(cornerRadius: 8)
-                .fill(.gray)
+                .fill(.black.opacity(0.6))
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(.white, lineWidth: 1)
                 )
-                .frame(height: 32)
+                .frame(height: 22)
                 .padding(.horizontal)
             RoundedRectangle(cornerRadius: 8)
-                .fill(.red)
+                .fill(.orange)
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(.white, lineWidth: 1)
                 )
-                .frame(width: UIScreen.main.bounds.width * 0.5, height: 32)
+                .frame(width: UIScreen.main.bounds.width * 0.5, height: 22)
                 .padding(.horizontal)
             
             
             ZStack(alignment: .center) {
                 RoundedRectangle(cornerRadius: 8)
                     .fill(.black.opacity(0))
-                    .frame(height: 32)
+                    .frame(height: 22)
                     .padding(.horizontal)
                 Text("Level 11 - 60%")
                     .fontWeight(.semibold)
+                    .font(.callout)
                     .foregroundStyle(.white)
-                    .shadow(color: .black.opacity(0.8), radius: 4, x: 1, y: 1)
+                    .shadow(color: .black.opacity(0.5), radius: 4, x: 1, y: 1)
             }
         }
     }
+}
+
+
+#Preview {
+    ProfileView(user: User(id: 1, email: "tajavon@student.42.fr", login: "tajavon", phone: "hidden", correction_point: 667, pool_month: "september", pool_year: "2023", location: "made-f0Br5s3", image: User_image(link: "https://cdn.intra.42.fr/users/75d7dbdc6a8da11f1a4fc38f0a641caf/tajavon.jpg", versions: User_image_version(large: "https://cdn.intra.42.fr/users/6ba29f06e26937c2fe7c6f193d22212d/large_tajavon.jpg", medium: "https://cdn.intra.42.fr/users/9db1bddfd3b1ad6cc7828e46f6d55af6/medium_tajavon.jpg", small: "https://cdn.intra.42.fr/users/4c23a85209107ba6f6c6e0f3baeacd82/small_tajavon.jpg", micro: "https://cdn.intra.42.fr/users/efe404a25dc50e94739d9d661d704606/micro_tajavon.jpg")), wallet: 14062005, projects_users: [Project_user(id: 3647453, occurrence: 0, final_mark: 100, status: "finished", validated: true, project: Project(id: 2360, name: "Mobile - 5 - Manage data and display", slug: "mobile-5-manage-data-and-display"), marked_at: "2024-04-20T16:24:42.913Z", marked: true, retriable_at: "2024-04-20T16:24:43.318Z", created_at: "2024-04-20T12:50:19.512Z", updated_at: "2024-04-22T13:15:48.627Z")], cursus_users: [Cursus_user(grade: nil, level: 9.57, skills: [Skill(id: 4, name: "Unix", level: 10.83)]), Cursus_user(grade: "Member", level: 11.6, skills: [Skill(id: 3, name: "Rigor", level: 7.9), Skill(id: 6, name: "Web", level: 7.03), Skill(id: 10, name: "Network & system administration", level: 7.0), Skill(id: 17, name: "Object-oriented programming", level: 6.16), Skill(id: 2, name: "Imperative programming", level: 5.07)])], coalitions: [Coalition(id: 107, name: "La Heap", slug: "la-heap", image_url: "https://cdn.intra.42.fr/coalition/image/107/heap-logo.svg", cover_url: "https://cdn.intra.42.fr/coalition/cover/107/heap-bg-option5.jpg", color: "#00B333", score: 0), Coalition(id: 47, name: "The Order", slug: "42cursus-paris-the-order", image_url: "https://cdn.intra.42.fr/coalition/image/47/order.svg", cover_url: "https://cdn.intra.42.fr/coalition/cover/47/order_background.jpg", color: "#FF6950", score: 505107)]))
 }

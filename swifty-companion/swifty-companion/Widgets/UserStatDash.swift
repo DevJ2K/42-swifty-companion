@@ -28,6 +28,7 @@ struct UserStatDash: View {
                 Text("\(wallets)")
                     .foregroundStyle(.white)
                     .font(.system(size: 14, weight: .semibold, design: .rounded))
+                    .shadow(color: .black.opacity(0.4), radius: 4, x: 1, y: 1)
                     
             }
             .frame(maxWidth: .infinity)
@@ -47,6 +48,7 @@ struct UserStatDash: View {
                 Text("\(correction_point)")
                     .foregroundStyle(.white)
                     .font(.system(size: 14, weight: .semibold, design: .rounded))
+                    .shadow(color: .black.opacity(0.4), radius: 4, x: 1, y: 1)
                     
             }
             .frame(maxWidth: .infinity)
@@ -66,6 +68,7 @@ struct UserStatDash: View {
                 Text("\(projects_completed)")
                     .foregroundStyle(.white)
                     .font(.system(size: 14, weight: .semibold, design: .rounded))
+                    .shadow(color: .black.opacity(0.4), radius: 4, x: 1, y: 1)
                     
             }
             .frame(maxWidth: .infinity)
@@ -73,7 +76,6 @@ struct UserStatDash: View {
         .frame(height: 80)
         .background(.gray.opacity(0.4))
         .clipShape(RoundedRectangle(cornerRadius: 20))
-        .padding()
     }
 }
 
