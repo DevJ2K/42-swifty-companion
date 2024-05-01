@@ -127,8 +127,13 @@ struct ProfileView: View {
                     .padding(.horizontal)
                     
                     // Level Bar
-                    UserLevelBar(level: user.cursus_users[user.cursus_users.count - 1].level)
-                        .padding(.vertical, 6)
+                    if let currentCursus = getCurrentCursus(all_cursus: user.cursus_users) {
+                        UserLevelBar(level: currentCursus.level)
+                            .padding(.vertical, 6)
+                    } else {
+                        UserLevelBar(level: -1)
+                            .padding(.vertical, 6)
+                    }
                     
                     // User Stat Dash
                     UserStatDash(wallets: user.wallet, correction_point: user.correction_point, projects_completed: user.projects_users.count)
@@ -223,19 +228,23 @@ struct ProfileView: View {
                         }
                         if (tabSelection == "Skills") {
                             // Se baser sur le grade
-                            ForEach(user.cursus_users[user.cursus_users.count - 1].skills, id: \.id) { skill in
-                                VStack {
-                                    Text(skill.name)
-                                    SkillLevelBar(level: skill.level)
+                            if let currentCursus = getCurrentCursus(all_cursus: user.cursus_users) {
+                                ForEach(currentCursus.skills, id: \.id) { skill in
+                                    VStack {
+                                        Text(skill.name)
+                                        SkillLevelBar(level: skill.level)
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                    
+                                    Rectangle()
+                                        .fill(.white.opacity(0.3))
+                                        .frame(width: 200, height: 1)
+                                        .padding(.bottom)
+                                    
+                                    
                                 }
-                                .frame(maxWidth: .infinity)
-                                
-                                Rectangle()
-                                    .fill(.white.opacity(0.3))
-                                    .frame(width: 200, height: 1)
-                                    .padding(.bottom)
-                            
-                                
+                            } else {
+                                Text("No cursus is active.")
                             }
                         }
                     }

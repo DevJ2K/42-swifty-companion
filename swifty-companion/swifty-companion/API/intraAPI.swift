@@ -15,6 +15,15 @@ struct EnvKey {
     let secret: String
 }
 
+func getCurrentCursus(all_cursus: [Cursus_user]) -> Cursus_user? {
+    for cursus in all_cursus {
+        if (cursus.grade != nil) {
+            return cursus
+        }
+    }
+    return nil
+}
+
 func fetchUserList(token: Token, login: String) async -> [UserListItem] {
     guard let url = URL(string: "https://api.intra.42.fr/v2/users?range%5Blogin%5D=\(login.lowercased()),\(login.lowercased())z") else { return [] }
     var request = URLRequest(url: url)
