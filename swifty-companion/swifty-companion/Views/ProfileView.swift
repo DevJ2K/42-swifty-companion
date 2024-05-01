@@ -10,7 +10,7 @@ import Foundation
 
 struct ProfileView: View {
     var user: User
-    @State private var tabSelection = "Projects"
+    @State private var tabSelection = "Skills"
     
     func getLocationColor(location: String) -> Color {
         if (location.starts(with: "bess")) {
@@ -85,165 +85,169 @@ struct ProfileView: View {
                     .resizable()
                     .ignoresSafeArea()
             }
-            
-            VStack {
-                // User Header
-                HStack(alignment: .bottom) {
-                    AsyncImage(url: URL(string: user.image.link)) { image in
-                        image
-                            .resizable()
-                            .clipShape(Circle())
-                            .shadow(color: .white.opacity(0.3), radius: 3, x: 1, y: 1)
-                    } placeholder: {
-                        ProgressView()
-                    }
-                    .frame(width: 100, height: 100)
-                    VStack {
-                        VStack(alignment: .leading, spacing: 0) {
-                            Text(user.login)
-                                .fontWeight(.bold)
-                                .foregroundStyle(.white)
-                                .font(.title2)
-                                .shadow(color: .white.opacity(0.2), radius: 4, x: 1, y: 1)
-                            Text(user.email)
-                                .fontWeight(.light)
-                                .foregroundStyle(.white)
-                                .opacity(0.8)
-                            Text(user.location ?? "Unavailable")
-                                .padding(.horizontal, 12)
-                                .padding(.vertical, 2)
-                                .foregroundStyle(.white)
-                                .fontWeight(.semibold)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 16)
-                                        .fill(getLocationColor(location: user.location ?? "Unavailable"))
-                                        .shadow(color: .black.opacity(0.5), radius: 4, x: 1, y: 1)
-                                )
-                                .padding(.vertical, 4)
+//            ScrollView {
+                VStack {
+                    // User Header
+                    HStack(alignment: .bottom) {
+                        AsyncImage(url: URL(string: user.image.link)) { image in
+                            image
+                                .resizable()
+                                .clipShape(Circle())
+                                .shadow(color: .white.opacity(0.3), radius: 3, x: 1, y: 1)
+                        } placeholder: {
+                            ProgressView()
                         }
+                        .frame(width: 100, height: 100)
+                        VStack {
+                            VStack(alignment: .leading, spacing: 0) {
+                                Text(user.login)
+                                    .fontWeight(.bold)
+                                    .foregroundStyle(.white)
+                                    .font(.title2)
+                                    .shadow(color: .white.opacity(0.2), radius: 4, x: 1, y: 1)
+                                Text(user.email)
+                                    .fontWeight(.light)
+                                    .foregroundStyle(.white)
+                                    .opacity(0.8)
+                                Text(user.location ?? "Unavailable")
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 2)
+                                    .foregroundStyle(.white)
+                                    .fontWeight(.semibold)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 16)
+                                            .fill(getLocationColor(location: user.location ?? "Unavailable"))
+                                            .shadow(color: .black.opacity(0.5), radius: 4, x: 1, y: 1)
+                                    )
+                                    .padding(.vertical, 4)
+                            }
+                        }
+                        Spacer()
                     }
-                    Spacer()
-                }
-                .padding(.horizontal)
-                
-                // Level Bar
-                UserLevelBar(level: user.cursus_users[user.cursus_users.count - 1].level)
-                    .padding(.vertical, 6)
-        
-                // User Stat Dash
-                UserStatDash(wallets: user.wallet, correction_point: user.correction_point, projects_completed: user.projects_users.count)
-                    .padding()
-
-                
-                // Custom Picker
-                HStack {
-                    Text("Projects")
-                        .fontWeight(.bold)
-                        .padding(.vertical, 4)
-                        .frame(maxWidth: .infinity)
-                        .background(
-                            ZStack {
-                                if (tabSelection == "Projects") {
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(.white)
+                    .padding(.horizontal)
+                    
+                    // Level Bar
+                    UserLevelBar(level: user.cursus_users[user.cursus_users.count - 1].level)
+                        .padding(.vertical, 6)
+                    
+                    // User Stat Dash
+                    UserStatDash(wallets: user.wallet, correction_point: user.correction_point, projects_completed: user.projects_users.count)
+                        .padding()
+                    
+                    
+                    // Custom Picker
+                    HStack {
+                        Text("Projects")
+                            .fontWeight(.bold)
+                            .padding(.vertical, 4)
+                            .frame(maxWidth: .infinity)
+                            .background(
+                                ZStack {
+                                    if (tabSelection == "Projects") {
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(.white)
+                                    }
+                                }
+                            )
+                            .foregroundStyle(tabSelection == "Projects" ? .black : .white)
+                            .onTapGesture {
+                                withAnimation(.interactiveSpring(response: 0.5, dampingFraction: 0.6, blendDuration: 0.6)) {
+                                    tabSelection = "Projects"
                                 }
                             }
-                        )
-                        .foregroundStyle(tabSelection == "Projects" ? .black : .white)
-                        .onTapGesture {
-                            withAnimation(.interactiveSpring(response: 0.5, dampingFraction: 0.6, blendDuration: 0.6)) {
-                                tabSelection = "Projects"
-                            }
-                        }
-                    Text("Skills")
-                        .fontWeight(.bold)
-                        .padding(.vertical, 4)
-                        .padding(.horizontal)
-                        .frame(maxWidth: .infinity)
-                        .background(
-                            ZStack {
-                                if (tabSelection == "Skills") {
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(.white)
+                        Text("Skills")
+                            .fontWeight(.bold)
+                            .padding(.vertical, 4)
+                            .padding(.horizontal)
+                            .frame(maxWidth: .infinity)
+                            .background(
+                                ZStack {
+                                    if (tabSelection == "Skills") {
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(.white)
+                                    }
+                                }
+                            )
+                            .foregroundStyle(tabSelection == "Skills" ? .black : .white)
+                            .onTapGesture {
+                                withAnimation(.interactiveSpring(response: 0.5, dampingFraction: 0.6, blendDuration: 0.6)) {
+                                    tabSelection = "Skills"
                                 }
                             }
-                        )
-                        .foregroundStyle(tabSelection == "Skills" ? .black : .white)
-                        .onTapGesture {
-                            withAnimation(.interactiveSpring(response: 0.5, dampingFraction: 0.6, blendDuration: 0.6)) {
-                                tabSelection = "Skills"
-                            }
-                        }
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.horizontal, 4)
-                .padding(.vertical, 4)
-                .background(
-                    RoundedRectangle(cornerRadius: 14)
-                        .fill(.gray.opacity(0.4)))
-                .padding(.horizontal)
-//                .padding(.vertical)
-                
-                
-                
-                
-                ScrollView {
-                    if (tabSelection == "Projects") {
-                        ForEach(user.projects_users.sorted(by: {$0.marked_at ?? ":" > $1.marked_at ?? ":"}), id: \.id) { project in
-                            if (project.status == "finished") {
-                                HStack {
-                                    Text("\(project.project.name) - ")
-                                    + Text("\(dateAgo(dateString: project.marked_at!))").bold()
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.horizontal, 4)
+                    .padding(.vertical, 4)
+                    .background(
+                        RoundedRectangle(cornerRadius: 14)
+                            .fill(.gray.opacity(0.4)))
+                    .padding(.horizontal)
+                    //                .padding(.vertical)
+                    
+                    
+                    
+                    
+                    ScrollView {
+                        if (tabSelection == "Projects") {
+                            ForEach(user.projects_users.sorted(by: {$0.marked_at ?? ":" > $1.marked_at ?? ":"}), id: \.id) { project in
+                                if (project.status == "finished") {
+                                    HStack {
+                                        Text("\(project.project.name) - ")
+                                        + Text("\(dateAgo(dateString: project.marked_at!))").bold()
                                         
-                                    Spacer()
-                                    Text("\(project.final_mark ?? 0)")
-                                        .fontWeight(.bold)
-                                        .foregroundStyle(.green)
-                                }
-                                .padding(.horizontal)
-                                Divider()
-                                    .background(.red)
+                                        Spacer()
+                                        Text("\(project.final_mark ?? 0)")
+                                            .fontWeight(.bold)
+                                            .foregroundStyle((project.validated != nil && project.validated!) ? .green : .red)
+                                    }
                                     .padding(.horizontal)
-                            } else if (project.status == "in_progress") {
-                                HStack {
-                                    Text("\(project.project.name)")
-                                    Spacer()
-                                    Image(systemName: "clock")
-                                        .fontWeight(.bold)
-                                        .foregroundStyle(.orange)
-                                }
-                                .padding(.horizontal)
-                                Divider()
-                                    .background(.red)
+                                    Divider()
+                                        .background(.red)
+                                        .padding(.horizontal)
+                                } else if (project.status == "in_progress") {
+                                    HStack {
+                                        Text("\(project.project.name)")
+                                        Spacer()
+                                        Image(systemName: "clock")
+                                            .fontWeight(.bold)
+                                            .foregroundStyle(.orange)
+                                    }
                                     .padding(.horizontal)
+                                    Divider()
+                                        .background(.red)
+                                        .padding(.horizontal)
+                                }
                             }
+                            //                        Text("Projects")
+                            //                            .frame(maxWidth: .infinity)
                         }
-//                        Text("Projects")
-//                            .frame(maxWidth: .infinity)
-                    }
-                    if (tabSelection == "Skills") {
-                        ForEach(user.cursus_users[user.cursus_users.count - 1].skills, id: \.id) { skill in
-                            HStack {
-                                Text(skill.name)
-                                Text(String(format: "%.2f", skill.level))
+                        if (tabSelection == "Skills") {
+                            ForEach(user.cursus_users[user.cursus_users.count - 1].skills, id: \.id) { skill in
+                                VStack {
+                                    Text(skill.name)
+//                                    SkillLevelBar(level: skill.level)
+//                                    Text(String(format: "%.2f", skill.level))
+                                }
+                                Divider()
+                                
                             }
+                            //                        Text("Skills")
+                            //                            .frame(maxWidth: .infinity)
                         }
-//                        Text("Skills")
-//                            .frame(maxWidth: .infinity)
                     }
+                    .padding(.vertical)
+                    //                .background(.white.opacity(0.5))
+                    .background(.gray.opacity(0.4))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .frame(height: 300)
+                    .padding(.horizontal)
+                    
+                    
+                    
+                    //                .pickerStyle(.segmented)
                 }
-                .padding(.vertical)
-//                .background(.white.opacity(0.5))
-                .background(.gray.opacity(0.4))
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                .frame(height: 300)
-                .padding(.horizontal)
-                
-                
-                
-                //                .pickerStyle(.segmented)
-            }
-            .frame(width: UIScreen.main.bounds.width)
+                .frame(width: UIScreen.main.bounds.width)
+//            }
         }
         .background(.black)
     }
@@ -251,39 +255,51 @@ struct ProfileView: View {
 
 struct UserLevelBar: View {
     var level: Double
+    @State private var levelBarPourcentage = 0.0
+    @State private var loadingDuration = 2.0
     
     var body: some View {
-        ZStack(alignment: .leading) {
-            RoundedRectangle(cornerRadius: 8)
-                .fill(.black.opacity(0.6))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(.white, lineWidth: 1)
-                )
-                .frame(height: 22)
-                .padding(.horizontal)
-            RoundedRectangle(cornerRadius: 8)
-                .fill(.orange)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(.white, lineWidth: 1)
-                )
-                .frame(width: UIScreen.main.bounds.width * 0.5, height: 22)
-                .padding(.horizontal)
-            
-            
-            ZStack(alignment: .center) {
+        GeometryReader { geometry in
+            ZStack(alignment: .leading) {
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(.black.opacity(0))
-                    .frame(height: 22)
-                    .padding(.horizontal)
-                Text("Level 11 - 60%")
-                    .fontWeight(.semibold)
-                    .font(.callout)
-                    .foregroundStyle(.white)
-                    .shadow(color: .black.opacity(0.5), radius: 4, x: 1, y: 1)
+                    .fill(.black.opacity(0.6))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(.white, lineWidth: 1)
+                    )
+                    .frame(width: geometry.size.width, height: 22)
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(.orange)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(.white, lineWidth: 1)
+                    )
+                    .frame(width: geometry.size.width * levelBarPourcentage, height: 22)
+                
+                ZStack(alignment: .center) {
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(.black.opacity(0))
+                        .frame(width: geometry.size.width, height: 22)
+                    Text("Level 11 - 60%")
+                        .fontWeight(.semibold)
+                        .font(.callout)
+                        .foregroundStyle(.white)
+                        .shadow(color: .black.opacity(0.5), radius: 4, x: 1, y: 1)
+                }
+            }
+            .onAppear {
+                var goToBarPourcentage = 0.0
+                if (goToBarPourcentage < 0.1) {
+                    goToBarPourcentage = 0.04
+                    loadingDuration = 0.2
+                }
+                withAnimation(.easeInOut(duration: loadingDuration)) {
+                    levelBarPourcentage = goToBarPourcentage
+                }
             }
         }
+        .padding(.horizontal)
+        .frame(width: UIScreen.main.bounds.width, height: 22)
     }
 }
 
@@ -293,7 +309,7 @@ struct UserLevelBar: View {
         Project_user(id: 3647453, occurrence: 0, final_mark: 100, status: "finished", validated: true, project: Project(id: 2360, name: "Mobile - 5 - Manage data and display", slug: "mobile-5-manage-data-and-display"), marked_at: "2024-04-20T16:24:42.913Z", marked: true, retriable_at: "2024-04-20T16:24:43.318Z", created_at: "2024-04-20T12:50:19.512Z", updated_at: "2024-04-22T13:15:48.627Z"),
         Project_user(id: 3648419, occurrence: 0, final_mark: nil, status: "in_progress", validated: nil, project: Project(id: 1395, name: "swifty-companion", slug: "42cursus-swifty-companion"), marked_at: nil, marked: false, retriable_at: nil, created_at: "2024-04-22T07:20:18.216Z", updated_at: "2024-04-22T07:22:26.978Z"),
         Project_user(id: 3615649, occurrence: 0, final_mark: 100, status: "finished", validated: true, project: Project(id: 2355, name: "Mobile", slug: "mobile"), marked_at: "2024-04-22T07:09:10.894Z", marked: true, retriable_at: nil, created_at: "2024-03-26T09:35:47.455Z", updated_at: "2024-04-22T07:09:10.903Z"),
-        Project_user(id: 3644358, occurrence: 0, final_mark: 100, status: "finished", validated: true, project: Project(id: 2359, name: "Mobile - 4 - Auth and dataBase", slug: "mobile-4-auth-and-database"), marked_at: "2024-04-18T19:08:29.024Z", marked: true, retriable_at: "2024-04-18T19:08:29.571Z", created_at: "2024-04-18T06:18:31.976Z", updated_at: "2024-04-20T16:49:33.683Z"),
+        Project_user(id: 3644358, occurrence: 0, final_mark: 0, status: "finished", validated: false, project: Project(id: 2359, name: "Mobile - 4 - Auth and dataBase", slug: "mobile-4-auth-and-database"), marked_at: "2024-04-18T19:08:29.024Z", marked: true, retriable_at: "2024-04-18T19:08:29.571Z", created_at: "2024-04-18T06:18:31.976Z", updated_at: "2024-04-20T16:49:33.683Z"),
         Project_user(id: 3640230, occurrence: 0, final_mark: 100, status: "finished", validated: true, project: Project(id: 2358, name: "Mobile - 3 - Design", slug: "mobile-3-design"), marked_at: "2024-04-16T14:43:42.570Z", marked: true, retriable_at: "2024-04-16T14:43:42.991Z", created_at: "2024-04-15T22:13:39.279Z", updated_at: "2024-04-18T12:51:50.185Z"),
         Project_user(id: 3628160, occurrence: 0, final_mark: 100, status: "finished", validated: true, project: Project(id: 2357, name: "Mobile - 2 - API and data", slug: "mobile-2-api-and-data"), marked_at: "2024-04-05T11:23:13.592Z", marked: true, retriable_at: "2024-04-05T11:23:14.088Z", created_at: "2024-04-04T19:56:01.029Z", updated_at: "2024-04-06T21:22:42.370Z"),
         Project_user(id: 3620411, occurrence: 0, final_mark: 100, status: "finished", validated: true, project: Project(id: 2356, name: "Mobile - 1 - Structure and logic", slug: "mobile-1-structure-and-logic"), marked_at: "2024-03-29T13:41:38.286Z", marked: true, retriable_at: "2024-03-29T13:41:38.710Z", created_at: "2024-03-29T09:14:01.882Z", updated_at: "2024-03-31T08:24:57.753Z"),
