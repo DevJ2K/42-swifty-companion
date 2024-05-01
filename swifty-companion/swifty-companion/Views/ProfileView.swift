@@ -141,7 +141,7 @@ struct ProfileView: View {
                 .padding(.vertical, 4)
                 .background(
                     RoundedRectangle(cornerRadius: 14)
-                        .fill(.white.opacity(0.4)))
+                        .fill(.gray.opacity(0.4)))
                 .padding(.horizontal)
 //                .padding(.vertical)
                 
@@ -149,7 +149,14 @@ struct ProfileView: View {
                 
                 
                 ScrollView {
-                    
+                    if (tabSelection == "Projects") {
+                        Text("Projects")
+                            .frame(maxWidth: .infinity)
+                    }
+                    if (tabSelection == "Skills") {
+                        Text("Skills")
+                            .frame(maxWidth: .infinity)
+                    }
                 }
 //                .background(.white.opacity(0.5))
                 .background(.gray.opacity(0.4))
