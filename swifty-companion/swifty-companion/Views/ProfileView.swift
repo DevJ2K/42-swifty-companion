@@ -38,7 +38,7 @@ struct ProfileView: View {
             print("Invalid date format")
             return ("Unavailable")
         }
-        print("=> \(pastDate)")
+//        print("=> \(pastDate)")
         
         let currentDate = Date()
 
@@ -222,21 +222,24 @@ struct ProfileView: View {
                             //                            .frame(maxWidth: .infinity)
                         }
                         if (tabSelection == "Skills") {
+                            // Se baser sur le grade
                             ForEach(user.cursus_users[user.cursus_users.count - 1].skills, id: \.id) { skill in
                                 VStack {
                                     Text(skill.name)
-//                                    SkillLevelBar(level: skill.level)
-//                                    Text(String(format: "%.2f", skill.level))
+                                    SkillLevelBar(level: skill.level)
                                 }
-                                Divider()
+                                .frame(maxWidth: .infinity)
+                                
+                                Rectangle()
+                                    .fill(.white.opacity(0.3))
+                                    .frame(width: 200, height: 1)
+                                    .padding(.bottom)
+                            
                                 
                             }
-                            //                        Text("Skills")
-                            //                            .frame(maxWidth: .infinity)
                         }
                     }
                     .padding(.vertical)
-                    //                .background(.white.opacity(0.5))
                     .background(.gray.opacity(0.4))
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                     .frame(height: 300)
@@ -256,7 +259,7 @@ struct ProfileView: View {
 struct UserLevelBar: View {
     var level: Double
     @State private var levelBarPourcentage = 0.0
-    @State private var loadingDuration = 2.0
+    @State private var loadingDuration = 0.0 //2.0
     
     var body: some View {
         GeometryReader { geometry in
@@ -288,7 +291,7 @@ struct UserLevelBar: View {
                 }
             }
             .onAppear {
-                var goToBarPourcentage = 0.0
+                var goToBarPourcentage = 0.6
                 if (goToBarPourcentage < 0.1) {
                     goToBarPourcentage = 0.04
                     loadingDuration = 0.2
@@ -300,6 +303,56 @@ struct UserLevelBar: View {
         }
         .padding(.horizontal)
         .frame(width: UIScreen.main.bounds.width, height: 22)
+    }
+}
+
+struct SkillLevelBar: View {
+    var level: Double
+    @State private var levelBarPourcentage = 0.0
+    @State private var loadingDuration = 0.0 // 2.0
+    
+    var body: some View {
+        GeometryReader { geometry in
+            ZStack(alignment: .leading) {
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(.black.opacity(0.6))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(.white.opacity(0.5), lineWidth: 1)
+                    )
+                    .frame(width: geometry.size.width, height: 16)
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(.orange)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(.white.opacity(0.5), lineWidth: 1)
+                    )
+                    .frame(width: geometry.size.width * levelBarPourcentage, height: 16)
+                
+                ZStack(alignment: .center) {
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(.black.opacity(0))
+                        .frame(width: geometry.size.width, height: 16)
+                    Text("Level 11 - 60%")
+                        .fontWeight(.semibold)
+                        .font(.caption)
+                        .foregroundStyle(.white)
+                        .shadow(color: .black.opacity(0.5), radius: 4, x: 1, y: 1)
+                }
+            }
+            .onAppear {
+                var goToBarPourcentage = 0.5
+                if (goToBarPourcentage < 0.1) {
+                    goToBarPourcentage = 0.04
+                    loadingDuration = 0.2
+                }
+                withAnimation(.easeInOut(duration: loadingDuration)) {
+                    levelBarPourcentage = goToBarPourcentage
+                }
+            }
+        }
+        .padding(.horizontal)
+        .frame(width: UIScreen.main.bounds.width * 0.85, height: 22)
     }
 }
 
