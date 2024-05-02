@@ -20,6 +20,7 @@
 		E42BF28E2BD648D7003DCEAA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E42BF28D2BD648D7003DCEAA /* Preview Assets.xcassets */; };
 		E42BF2992BD64D28003DCEAA /* intraAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42BF2982BD64D28003DCEAA /* intraAPI.swift */; };
 		E4AA22692BE124D100E22140 /* UserStatDash.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AA22682BE124D100E22140 /* UserStatDash.swift */; };
+		E4C39AF62BE3C60600AD77AC /* UsefulFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C39AF52BE3C60600AD77AC /* UsefulFunctions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		E42BF28D2BD648D7003DCEAA /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		E42BF2982BD64D28003DCEAA /* intraAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = intraAPI.swift; sourceTree = "<group>"; };
 		E4AA22682BE124D100E22140 /* UserStatDash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatDash.swift; sourceTree = "<group>"; };
+		E4C39AF52BE3C60600AD77AC /* UsefulFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsefulFunctions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 		E42BF2852BD648D6003DCEAA /* swifty-companion */ = {
 			isa = PBXGroup;
 			children = (
+				E4C39AF42BE3C5EE00AD77AC /* Utils */,
 				E40C92912BDF9BFC0066B186 /* Data */,
 				E40C928E2BDF952E0066B186 /* Widgets */,
 				E42BF29A2BD65A7B003DCEAA /* Views */,
@@ -124,6 +127,14 @@
 				E41248522BE28CB500459D52 /* ProjectView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		E4C39AF42BE3C5EE00AD77AC /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				E4C39AF52BE3C60600AD77AC /* UsefulFunctions.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -207,6 +218,7 @@
 				E40C92972BDFA1F30066B186 /* TokenStruct.swift in Sources */,
 				E42BF2992BD64D28003DCEAA /* intraAPI.swift in Sources */,
 				E42BF2892BD648D6003DCEAA /* ContentView.swift in Sources */,
+				E4C39AF62BE3C60600AD77AC /* UsefulFunctions.swift in Sources */,
 				E40C92932BDF9C110066B186 /* UserStruct.swift in Sources */,
 				E40C92952BDFA1330066B186 /* UsersStruct.swift in Sources */,
 				E42BF2872BD648D6003DCEAA /* swifty_companionApp.swift in Sources */,
