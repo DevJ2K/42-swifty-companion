@@ -25,12 +25,13 @@ func getCurrentCursus(all_cursus: [Cursus_user]) -> Cursus_user? {
 }
 
 func fetchUserList(token: Token, login: String) async -> [UserListItem] {
-    guard let url = URL(string: "https://api.intra.42.fr/v2/users?range%5Blogin%5D=\(login.lowercased()),\(login.lowercased())z") else { return [] }
+    guard let url = URL(string: "https://api.intra.42.fr/v2/campus/1/users?range%5Blogin%5D=\(login.lowercased()),\(login.lowercased())z") else { return [] }
     var request = URLRequest(url: url)
     request.setValue("Bearer \(token.access_token)", forHTTPHeaderField: "Authorization")
     do {
         let (data, _) = try await URLSession.shared.data(for: request)
         let dataDecode = try JSONDecoder().decode([UserListItem].self, from: data)
+        return dataDecode
     } catch {
         print("Error while fetching users : \(error)")
     }
@@ -38,7 +39,7 @@ func fetchUserList(token: Token, login: String) async -> [UserListItem] {
 }
 
 func makeRequestsWithToken(token: Token) async {
-    guard let url = URL(string: "https://api.intra.42.fr/v2/users?range%5Blogin%5D=ale,alez") else { return }
+    guard let url = URL(string: "https://api.intra.42.fr/v2/campus/1/users?range%5Blogin%5D=ale,alez") else { return }
     var request = URLRequest(url: url)
     request.setValue("Bearer \(token.access_token)", forHTTPHeaderField: "Authorization")
     do {
@@ -76,8 +77,11 @@ func getEnvKey() -> EnvKey? {
 }
 
 class IntraAPI: ObservableObject {
-    @Published var token: Token?
+    private var token: Token?
+
     @Published var isFetchingToken = false
+    @Published var isFetchingUserList = false
+    @Published var userList: [UserListItem] = []
     
     static let shared = IntraAPI()
     
@@ -99,12 +103,8 @@ class IntraAPI: ObservableObject {
         do {
             let (data, _) = try await URLSession.shared.data(for: request)
             let decoder = JSONDecoder()
-            let tmp = try decoder.decode(Token.self, from: data)
-            DispatchQueue.main.async {
-                IntraAPI.shared.token = tmp
-                print(IntraAPI.shared.token ?? "Unexist token.")
-            }
-//            await makeRequestsWithToken(token: token!)
+            token = try decoder.decode(Token.self, from: data)
+            print(token ?? "Unexist token.")
         } catch {
             print("Failed while fetching token : \(error)")
         }
@@ -113,9 +113,7 @@ class IntraAPI: ObservableObject {
     func checkTokenExpirationTime() async {
         if (token == nil) {
             print("The token is not defined.")
-            Task {
-                await getToken()
-            }
+            await getToken()
         } else {
             guard let url = URL(string: "https://api.intra.42.fr/oauth/token/info") else { return }
             var request = URLRequest(url: url)
@@ -136,4 +134,37 @@ class IntraAPI: ObservableObject {
             }
         }
     }
+    
+    func findUsersByLogin(login: String) async {
+        // Update isFetching... loader in DispatchQueue to update the view.
+        DispatchQueue.main.async {
+            self.isFetchingUserList = true
+        }
+        // Check if the token is expired.
+        await checkTokenExpirationTime()
+        
+        // Retrieve the token
+        guard let token = token else {
+            print("Failed to renew the token")
+            DispatchQueue.main.async {
+                self.isFetchingUserList = false
+            }
+            return
+        }
+        print("The token was successfully retrieved !")
+//        return
+        print("Fetching users list startswith : \(login)")
+        userList = await fetchUserList(token: token, login: login.trimmingCharacters(in: .whitespaces))
+        self.isFetchingUserList = false
+        print("End of fetching users.")
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+//            self.isFetchingUserList = false
+//            print("End of fetching users.")
+//        }
+    }
+}
+
+import SwiftUI
+#Preview {
+    ContentView()
 }

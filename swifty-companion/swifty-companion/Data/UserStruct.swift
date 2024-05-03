@@ -9,12 +9,12 @@ import Foundation
 
 struct User: Codable, Identifiable {
     let id: Int
-    let email: String
+    let email: String?
     let login: String
     let phone: String?
     let correction_point: Int
-    let pool_month: String
-    let pool_year: String
+    let pool_month: String?
+    let pool_year: String?
     let location: String?
     let image: User_image
     let wallet: Int
@@ -24,15 +24,15 @@ struct User: Codable, Identifiable {
 }
 
 struct User_image: Codable {
-    let link: String
+    let link: String?
     let versions: User_image_version
 }
 
 struct User_image_version: Codable {
-    let large: String
-    let medium: String
-    let small: String
-    let micro: String
+    let large: String?
+    let medium: String?
+    let small: String?
+    let micro: String?
 }
 
 struct Project_user: Codable, Identifiable {

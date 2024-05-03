@@ -15,13 +15,13 @@ struct UsersList: Codable
 
 struct UserListItem: Identifiable, Codable {
     let id: Int
-    let email: String
+    let email: String?
     let login: String
     let url: String
     let phone: String?
     let correction_point: Int
-    let pool_month: String
-    let pool_year: String
+    let pool_month: String?
+    let pool_year: String?
     let location: String?
     let image: User_image
     let wallet: Int

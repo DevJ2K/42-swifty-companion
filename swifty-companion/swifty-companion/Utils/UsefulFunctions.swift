@@ -12,7 +12,7 @@ func getFloorValue(nb: Double) -> Int {
 }
 
 func getDecimalValue(nb: Double) -> Double {
-    print("\(nb) - \(floor(nb)) = \(nb - floor(nb) + 0.001)")
+//    print("\(nb) - \(floor(nb)) = \(nb - floor(nb) + 0.001)")
     return (nb - floor(nb) + 0.001)
 }
 

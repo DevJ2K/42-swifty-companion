@@ -95,15 +95,23 @@ struct ProfileView: View {
                 ScrollView {
                     // User Header
                     HStack(alignment: .bottom) {
-                        AsyncImage(url: URL(string: user.image.link)) { image in
-                            image
-                                .resizable()
+                        if let user_img = user.image.link {
+                            AsyncImage(url: URL(string: user_img)) { image in
+                                image
+                                    .resizable()
+                                    .clipShape(Circle())
+                                    .shadow(color: .white.opacity(0.3), radius: 3, x: 1, y: 1)
+                            } placeholder: {
+                                ProgressView()
+                            }
+                            .frame(width: 100, height: 100)
+                        } else {
+                            Image(systemName: "person")
+                                .font(.title)
+                                .frame(width: 100, height: 100)
+                                .background(.black.opacity(0.3))
                                 .clipShape(Circle())
-                                .shadow(color: .white.opacity(0.3), radius: 3, x: 1, y: 1)
-                        } placeholder: {
-                            ProgressView()
                         }
-                        .frame(width: 100, height: 100)
                         VStack {
                             VStack(alignment: .leading, spacing: 0) {
                                 Text(user.login)
@@ -111,7 +119,7 @@ struct ProfileView: View {
                                     .foregroundStyle(.white)
                                     .font(.title2)
                                     .shadow(color: .white.opacity(0.2), radius: 4, x: 1, y: 1)
-                                Text(user.email)
+                                Text(user.email ?? "Unknown")
                                     .fontWeight(.light)
                                     .foregroundStyle(.white)
                                     .opacity(0.8)
