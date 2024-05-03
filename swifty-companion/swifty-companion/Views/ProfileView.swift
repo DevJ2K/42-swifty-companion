@@ -91,6 +91,7 @@ struct ProfileView: View {
                         .resizable()
                         .ignoresSafeArea()
                 }
+            
                 ScrollView {
                     // User Header
                     HStack(alignment: .bottom) {
@@ -257,6 +258,8 @@ struct ProfileView: View {
                 }
                 .frame(width: UIScreen.main.bounds.width)
             }
+//            .navigationTitle(user.login)
+//            .toolbar(.hidden, for: .tabBar)
             .background(.black)
         }
     }
