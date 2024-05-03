@@ -11,6 +11,11 @@ import Foundation
 struct ProfileView: View {
     var user: User
     @State private var tabSelection = "Skills"
+    @Environment(\.colorScheme) private var colorScheme
+    
+    func isLightMode() -> Bool {
+        return (colorScheme == .light)
+    }
     
     func getLocationColor(location: String) -> Color {
         if (location.starts(with: "bess")) {
@@ -227,6 +232,7 @@ struct ProfileView: View {
                                 ForEach(currentCursus.skills, id: \.id) { skill in
                                     VStack {
                                         Text(skill.name)
+                                            .foregroundStyle(.white)
                                         SkillLevelBar(level: skill.level)
                                     }
                                     .frame(maxWidth: .infinity)
