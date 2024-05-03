@@ -65,7 +65,7 @@ struct ProfileView: View {
     }
     
     var body: some View {
-//        NavigationView {
+        NavigationView {
             ZStack {
                 if (user.coalitions != nil) {
                     //                Color.black
@@ -86,8 +86,7 @@ struct ProfileView: View {
                         .resizable()
                         .ignoresSafeArea()
                 }
-                //            ScrollView {
-                VStack {
+                ScrollView {
                     // User Header
                     HStack(alignment: .bottom) {
                         AsyncImage(url: URL(string: user.image.link)) { image in
@@ -188,10 +187,6 @@ struct ProfileView: View {
                         RoundedRectangle(cornerRadius: 14)
                             .fill(.gray.opacity(0.4)))
                     .padding(.horizontal)
-                    //                .padding(.vertical)
-                    
-                    
-                    
                     
                     ScrollView {
                         if (tabSelection == "Projects") {
@@ -225,8 +220,6 @@ struct ProfileView: View {
                                         .padding(.horizontal)
                                 }
                             }
-                            //                        Text("Projects")
-                            //                            .frame(maxWidth: .infinity)
                         }
                         if (tabSelection == "Skills") {
                             // Se baser sur le grade
@@ -255,16 +248,11 @@ struct ProfileView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                     .frame(height: 300)
                     .padding(.horizontal)
-                    
-                    
-                    
-                    //                .pickerStyle(.segmented)
                 }
                 .frame(width: UIScreen.main.bounds.width)
-                //            }
             }
             .background(.black)
-//        }
+        }
     }
 }
 
@@ -311,12 +299,15 @@ struct UserLevelBar: View {
                     goToBarPourcentage = 0.03
                     loadingDuration = 0.2
                 }
-                withAnimation(.easeInOut(duration: loadingDuration)) {
-                    levelBarPourcentage = goToBarPourcentage
+                DispatchQueue.main.async {
+                    withAnimation(.easeInOut(duration: loadingDuration * goToBarPourcentage)) {
+                        levelBarPourcentage = goToBarPourcentage
+                    }
                 }
             }
         }
         .padding(.horizontal)
+//        .frame(width: UIScreen.main.bounds.width, height: 22)
         .frame(width: UIScreen.main.bounds.width, height: 22)
     }
 }
@@ -364,13 +355,15 @@ struct SkillLevelBar: View {
                     goToBarPourcentage = 0.03
                     loadingDuration = 0.2
                 }
-                withAnimation(.easeInOut(duration: loadingDuration)) {
-                    levelBarPourcentage = goToBarPourcentage
+                DispatchQueue.main.async {
+                    withAnimation(.easeInOut(duration: loadingDuration * goToBarPourcentage)) {
+                        levelBarPourcentage = goToBarPourcentage
+                    }
                 }
             }
         }
         .padding(.horizontal)
-        .frame(width: UIScreen.main.bounds.width * 0.85, height: 22)
+        .frame(width: UIScreen.main.bounds.width * 0.85, height: 16)
     }
 }
 
