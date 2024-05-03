@@ -41,9 +41,11 @@ struct Project_user: Codable, Identifiable {
     let final_mark: Int?
     let status: String
     let validated: Bool?
+
     let project: Project
     let marked_at: String?
     let marked: Bool
+    let cursus_ids: [Int]
     let retriable_at: String?
     let created_at: String?
     let updated_at: String?
@@ -58,6 +60,7 @@ struct Project: Codable, Identifiable {
 struct Cursus_user: Codable {
     let grade: String?
     let level: Double
+    let cursus_id: Int
     let skills: [Skill]
 }
 
