@@ -170,23 +170,24 @@ class IntraAPI: ObservableObject {
         print("The token was successfully retrieved !")
 //        return
         print("Fetching users list startswith : \(login)")
-        userList = await fetchUserList(token: token, login: login)
+        let userListResult = await fetchUserList(token: token, login: login)
         DispatchQueue.main.async {
+            self.userList = userListResult
             self.isFetchingUserList = false
         }
         print("End of fetching users.")
     }
     
     func fetchUserByLogin(login: String) async -> User? {
-        DispatchQueue.main.async {
-            self.isFetchingUser = true
-        }
+//        DispatchQueue.main.async {
+//            self.isFetchingUser = true
+//        }
         await checkTokenExpirationTime()
         guard let token = token else {
             print("Failed to renew the token")
-            DispatchQueue.main.async {
-                self.isFetchingUserList = false
-            }
+//            DispatchQueue.main.async {
+//                self.isFetchingUserList = false
+//            }
             return nil
         }
         var user = await fetchUser(token: token, login: login)
@@ -195,9 +196,9 @@ class IntraAPI: ObservableObject {
         }
         user?.coalitions = await fetchUserCoalitions(token: token, login: login)
 //        print("Fetching user : \(user)")
-        DispatchQueue.main.async {
-            self.isFetchingUser = false
-        }
+//        DispatchQueue.main.async {
+//            self.isFetchingUser = false
+//        }
         return user
     }
 }

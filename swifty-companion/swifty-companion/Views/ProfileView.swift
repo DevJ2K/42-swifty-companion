@@ -55,7 +55,7 @@ struct ProfileView: View {
     }
     
     func getCoalition(user: User) -> Coalition? {
-        if let currentCursus = getCurrentCursus(all_cursus: user.cursus_users) {
+        if getCurrentCursus(all_cursus: user.cursus_users) != nil {
             if (user.coalitions != nil && user.coalitions?.isEmpty == false) {
                 return user.coalitions![user.coalitions!.count - 1]
             }
@@ -143,6 +143,7 @@ struct ProfileView: View {
                                 } else {
                                     Image(systemName: "person")
                                         .font(.title)
+                                        .foregroundStyle(.white)
                                         .frame(width: 100, height: 100)
                                         .background(.black.opacity(0.3))
                                         .clipShape(Circle())
@@ -244,68 +245,98 @@ struct ProfileView: View {
                             
                             ScrollView {
                                 if (tabSelection == "Projects") {
-                                    ForEach(user.projects_users.sorted(by: {$0.marked_at ?? ":" > $1.marked_at ?? ":"}), id: \.id) { project in
-                                        if (isGoodCursusId(user: user, project: project)) {
-
-                                            //                                        if (currentCursus!.cursus_id == project.cu
-                                            if (project.status == "finished") {
-                                                HStack {
-                                                    Text("\(project.project.name) - ")
-                                                    + Text("\(dateAgo(dateString: project.marked_at))").bold()
-                                                    
-                                                    Spacer()
-                                                    Text("\(project.final_mark ?? 0)")
-                                                        .fontWeight(.bold)
-                                                        .foregroundStyle((project.validated != nil && project.validated!) ? .green : .red)
-                                                }
-                                                .padding(.horizontal)
-                                                .padding(.vertical, 4)
-                                                Divider()
-                                                    .background(.red)
+                                    if (user.projects_users.isEmpty == false) {
+                                        ForEach(user.projects_users.sorted(by: {$0.marked_at ?? ":" > $1.marked_at ?? ":"}), id: \.id) { project in
+                                            if (isGoodCursusId(user: user, project: project)) {
+                                                
+                                                //                                        if (currentCursus!.cursus_id == project.cu
+                                                if (project.status == "finished") {
+                                                    HStack {
+                                                        Text("\(project.project.name) - ")
+                                                        + Text("\(dateAgo(dateString: project.marked_at))").bold()
+                                                        
+                                                        Spacer()
+                                                        Text("\(project.final_mark ?? 0)")
+                                                            .fontWeight(.bold)
+                                                            .foregroundStyle((project.validated != nil && project.validated!) ? .green : .red)
+                                                    }
                                                     .padding(.horizontal)
-                                            } else if (project.status == "in_progress") {
-                                                HStack {
-                                                    Text("\(project.project.name)")
-                                                    Spacer()
-                                                    Image(systemName: "clock")
-                                                        .fontWeight(.bold)
-                                                        .foregroundStyle(.orange)
-                                                }
-                                                .padding(.horizontal)
-                                                Divider()
-                                                    .background(.red)
+                                                    .padding(.vertical, 4)
+                                                    Divider()
+                                                        .background(.white.opacity(0.3))
+                                                        .padding(.horizontal)
+                                                } else if (project.status == "in_progress") {
+                                                    HStack {
+                                                        Text("\(project.project.name)")
+                                                        Spacer()
+                                                        Image(systemName: "clock")
+                                                            .fontWeight(.bold)
+                                                            .foregroundStyle(.orange)
+                                                    }
                                                     .padding(.horizontal)
+                                                    Divider()
+                                                        .background(.white.opacity(0.3))
+                                                        .padding(.horizontal)
+                                                }
                                             }
+                                        }
+                                    } else {
+                                        VStack(spacing: 16) {
+                                            Image(systemName: "xmark.seal.fill")
+                                                .font(.system(size: 42))
+                                                .padding(.top)
+                                            Text("This user has no projects in progress.")
+                                                .font(.title3)
+                                                .bold()
+                                                .frame(maxWidth: .infinity)
                                         }
                                     }
                                 }
                                 if (tabSelection == "Skills") {
                                     // Se baser sur le grade
                                     if let currentCursus = getCurrentCursus(all_cursus: user.cursus_users) {
-                                        ForEach(currentCursus.skills, id: \.id) { skill in
-                                            VStack {
-                                                Text(skill.name)
-                                                    .foregroundStyle(.white)
-                                                
-                                                if let coalition = getCoalition(user: user) {
-                                                    SkillLevelBar(level: skill.level, color: Color(hex: coalition.color))
-                                                        .padding(.vertical, 6)
-                                                } else {
-                                                    UserLevelBar(level: skill.level)
-                                                        .padding(.vertical, 6)
+                                        if (currentCursus.skills.isEmpty != false) {
+                                            ForEach(currentCursus.skills, id: \.id) { skill in
+                                                VStack {
+                                                    Text(skill.name)
+                                                        .foregroundStyle(.white)
+                                                    
+                                                    if let coalition = getCoalition(user: user) {
+                                                        SkillLevelBar(level: skill.level, color: Color(hex: coalition.color))
+                                                            .padding(.vertical, 6)
+                                                    } else {
+                                                        UserLevelBar(level: skill.level)
+                                                            .padding(.vertical, 6)
+                                                    }
                                                 }
+                                                .frame(maxWidth: .infinity)
+                                                
+                                                Rectangle()
+                                                    .fill(.white.opacity(0.3))
+                                                    .frame(width: 200, height: 1)
+                                                    .padding(.bottom)
                                             }
-                                            .frame(maxWidth: .infinity)
-                                            
-                                            Rectangle()
-                                                .fill(.white.opacity(0.3))
-                                                .frame(width: 200, height: 1)
-                                                .padding(.bottom)
-                                            
-                                            
+                                        } else {
+                                            VStack(spacing: 16) {
+                                                Image(systemName: "xmark.seal.fill")
+                                                    .font(.system(size: 42))
+                                                    .padding(.top)
+                                                Text("This user has no skills.")
+                                                    .font(.title3)
+                                                    .bold()
+                                                    .frame(maxWidth: .infinity)
+                                            }
                                         }
                                     } else {
-                                        Text("No cursus is active.")
+                                        VStack(spacing: 16) {
+                                            Image(systemName: "xmark.seal.fill")
+                                                .font(.system(size: 42))
+                                                .padding(.top)
+                                            Text("This user has no skills.")
+                                                .font(.title3)
+                                                .bold()
+                                                .frame(maxWidth: .infinity)
+                                        }
                                     }
                                 }
                             }
@@ -330,11 +361,11 @@ struct ProfileView: View {
             
         }
         .onAppear {
-            let debug = false
+            let debug = true
             if (debug) {
                 user = User(id: 1, email: "tajavon@student.42.fr", login: "tajavon", phone: "hidden", correction_point: 667, pool_month: "september", pool_year: "2023", location: "made-f0Br5s3", image: User_image(link: "https://cdn.intra.42.fr/users/75d7dbdc6a8da11f1a4fc38f0a641caf/tajavon.jpg", versions: User_image_version(large: "https://cdn.intra.42.fr/users/6ba29f06e26937c2fe7c6f193d22212d/large_tajavon.jpg", medium: "https://cdn.intra.42.fr/users/9db1bddfd3b1ad6cc7828e46f6d55af6/medium_tajavon.jpg", small: "https://cdn.intra.42.fr/users/4c23a85209107ba6f6c6e0f3baeacd82/small_tajavon.jpg", micro: "https://cdn.intra.42.fr/users/efe404a25dc50e94739d9d661d704606/micro_tajavon.jpg")), wallet: 14062005, projects_users: [
                     Project_user(id: 3647453, occurrence: 0, final_mark: 100, status: "finished", validated: true, project: Project(id: 2360, name: "Mobile - 5 - Manage data and display", slug: "mobile-5-manage-data-and-display"), marked_at: "2024-04-20T16:24:42.913Z", marked: true, cursus_ids: [21], retriable_at: "2024-04-20T16:24:43.318Z", created_at: "2024-04-20T12:50:19.512Z", updated_at: "2024-04-22T13:15:48.627Z"),
-                    Project_user(id: 3648419, occurrence: 0, final_mark: nil, status: "in_progress", validated: nil, project: Project(id: 1395, name: "swifty-companion", slug: "42cursus-swifty-companion"), marked_at: nil, marked: false, cursus_ids: [21], retriable_at: nil, created_at: "2024-04-22T07:20:18.216Z", updated_at: "2024-04-22T07:22:26.978Z"),
+                    Project_user(id: 3648419, occurrence: 0, final_mark: nil, status: "in_progress", validated: false, project: Project(id: 1395, name: "swifty-companion", slug: "42cursus-swifty-companion"), marked_at: nil, marked: false, cursus_ids: [21], retriable_at: nil, created_at: "2024-04-22T07:20:18.216Z", updated_at: "2024-04-22T07:22:26.978Z"),
                     Project_user(id: 3615649, occurrence: 0, final_mark: 100, status: "finished", validated: true, project: Project(id: 2355, name: "Mobile", slug: "mobile"), marked_at: "2024-04-22T07:09:10.894Z", marked: true, cursus_ids: [21], retriable_at: nil, created_at: "2024-03-26T09:35:47.455Z", updated_at: "2024-04-22T07:09:10.903Z"),
                     Project_user(id: 3644358, occurrence: 0, final_mark: 0, status: "finished", validated: false, project: Project(id: 2359, name: "Mobile - 4 - Auth and dataBase", slug: "mobile-4-auth-and-database"), marked_at: "2024-04-18T19:08:29.024Z", marked: true, cursus_ids: [21], retriable_at: "2024-04-18T19:08:29.571Z", created_at: "2024-04-18T06:18:31.976Z", updated_at: "2024-04-20T16:49:33.683Z"),
                     Project_user(id: 3640230, occurrence: 0, final_mark: 100, status: "finished", validated: true, project: Project(id: 2358, name: "Mobile - 3 - Design", slug: "mobile-3-design"), marked_at: "2024-04-16T14:43:42.570Z", marked: true, cursus_ids: [21], retriable_at: "2024-04-16T14:43:42.991Z", created_at: "2024-04-15T22:13:39.279Z", updated_at: "2024-04-18T12:51:50.185Z"),
@@ -350,9 +381,11 @@ struct ProfileView: View {
                 ], cursus_users: [Cursus_user(grade: nil, level: 9.57, cursus_id: 9, skills: [Skill(id: 4, name: "Unix", level: 10.83)]), Cursus_user(grade: "Member", level: 11.6, cursus_id: 21, skills: [Skill(id: 3, name: "Rigor", level: 7.9), Skill(id: 9, name: "Strong", level: 7.01), Skill(id: 6, name: "Web", level: 7.03), Skill(id: 10, name: "Network & system administration", level: 7.98), Skill(id: 17, name: "Object-oriented programming", level: 6.16), Skill(id: 2, name: "Imperative programming", level: 5.07)])], coalitions: [Coalition(id: 107, name: "La Heap", slug: "la-heap", image_url: "https://cdn.intra.42.fr/coalition/image/107/heap-logo.svg", cover_url: "https://cdn.intra.42.fr/coalition/cover/107/heap-bg-option5.jpg", color: "#00B333", score: 0), Coalition(id: 47, name: "The Order", slug: "42cursus-paris-the-order", image_url: "https://cdn.intra.42.fr/coalition/image/47/order.svg", cover_url: "https://cdn.intra.42.fr/coalition/cover/47/order_background.jpg", color: "#FF6950", score: 505107)])
             } else {
                 Task {
+                    intraAPI.isFetchingUser = true
                     let fetchedUser = await intraAPI.fetchUserByLogin(login: login)
                     DispatchQueue.main.async {
                         user = fetchedUser
+                        intraAPI.isFetchingUser = false
                     }
                 }
             }

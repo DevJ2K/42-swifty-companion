@@ -44,6 +44,7 @@ struct SearchCell: View {
             } else {
                 Image(systemName: "person")
                     .font(.title)
+                    .foregroundStyle(.white)
                     .frame(width: 70, height: 70)
                     .background(.black.opacity(0.3))
                     .clipShape(Circle())
