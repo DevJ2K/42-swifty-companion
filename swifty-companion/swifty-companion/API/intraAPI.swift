@@ -21,7 +21,11 @@ func getCurrentCursus(all_cursus: [Cursus_user]) -> Cursus_user? {
             return cursus
         }
     }
-    return nil
+    if (all_cursus.isEmpty) {
+        return nil
+    } else {
+        return all_cursus.first
+    }
 }
 
 func fetchUserList(token: Token, login: String) async -> [UserListItem] {
@@ -36,6 +40,20 @@ func fetchUserList(token: Token, login: String) async -> [UserListItem] {
         print("Error while fetching users : \(error)")
     }
     return []
+}
+
+func fetchUserCoalitions(token: Token, login: String) async -> [Coalition]? {
+    guard let url = URL(string: "https://api.intra.42.fr/v2/users/\(login.lowercased().trimmingCharacters(in: .whitespaces))/coalitions") else { return nil }
+    var request = URLRequest(url: url)
+    request.setValue("Bearer \(token.access_token)", forHTTPHeaderField: "Authorization")
+    do {
+        let (data, _) = try await URLSession.shared.data(for: request)
+        let dataDecode = try JSONDecoder().decode([Coalition].self, from: data)
+        return dataDecode
+    } catch {
+        print("Error while fetching user : \(error)")
+    }
+    return nil
 }
 
 func fetchUser(token: Token, login: String) async -> User? {
@@ -169,8 +187,12 @@ class IntraAPI: ObservableObject {
             }
             return nil
         }
-        let user = await fetchUser(token: token, login: login)
-        print("Fetching user : \(user)")
+        var user = await fetchUser(token: token, login: login)
+        if (user == nil) {
+            return nil
+        }
+        user?.coalitions = await fetchUserCoalitions(token: token, login: login)
+//        print("Fetching user : \(user)")
         self.isFetchingUser = false
         return user
     }

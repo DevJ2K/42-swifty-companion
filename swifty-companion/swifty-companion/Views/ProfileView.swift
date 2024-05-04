@@ -221,7 +221,6 @@ struct ProfileView: View {
                             
                             ScrollView {
                                 if (tabSelection == "Projects") {
-                                    let currentCursus = getCurrentCursus(all_cursus: user.cursus_users)
                                     ForEach(user.projects_users.sorted(by: {$0.marked_at ?? ":" > $1.marked_at ?? ":"}), id: \.id) { project in
                                         if (isGoodCursusId(user: user, project: project)) {
 
@@ -321,7 +320,7 @@ struct ProfileView: View {
                 ], cursus_users: [Cursus_user(grade: nil, level: 9.57, cursus_id: 9, skills: [Skill(id: 4, name: "Unix", level: 10.83)]), Cursus_user(grade: "Member", level: 11.6, cursus_id: 21, skills: [Skill(id: 3, name: "Rigor", level: 7.9), Skill(id: 9, name: "Strong", level: 7.01), Skill(id: 6, name: "Web", level: 7.03), Skill(id: 10, name: "Network & system administration", level: 7.0), Skill(id: 17, name: "Object-oriented programming", level: 6.16), Skill(id: 2, name: "Imperative programming", level: 5.07)])], coalitions: [Coalition(id: 107, name: "La Heap", slug: "la-heap", image_url: "https://cdn.intra.42.fr/coalition/image/107/heap-logo.svg", cover_url: "https://cdn.intra.42.fr/coalition/cover/107/heap-bg-option5.jpg", color: "#00B333", score: 0), Coalition(id: 47, name: "The Order", slug: "42cursus-paris-the-order", image_url: "https://cdn.intra.42.fr/coalition/image/47/order.svg", cover_url: "https://cdn.intra.42.fr/coalition/cover/47/order_background.jpg", color: "#FF6950", score: 505107)])
             } else {
                 Task {
-                    let fetchedUser = await intraAPI.fetchUserByLogin(login: "tajavon")
+                    let fetchedUser = await intraAPI.fetchUserByLogin(login: login)
                     DispatchQueue.main.async {
                         user = fetchedUser
                     }

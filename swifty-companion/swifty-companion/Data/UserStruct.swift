@@ -20,7 +20,7 @@ struct User: Codable, Identifiable {
     let wallet: Int
     let projects_users: [Project_user]
     let cursus_users: [Cursus_user]
-    let coalitions: [Coalition]?
+    var coalitions: [Coalition]?
 }
 
 struct User_image: Codable {
