@@ -48,7 +48,11 @@ struct ContentView: View {
                     
                     ScrollView {
                         ForEach(intraAPI.userList, id: \.id) { user in
-                            SearchCell(item: user)
+                            NavigationLink {
+                                ProfileView(login: user.login)
+                            } label: {
+                                SearchCell(item: user)
+                            }
                         }
 //                        ForEach(0 ..< 4, id: \.self) { i in
 //                            NavigationLink {

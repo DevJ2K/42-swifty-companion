@@ -49,7 +49,35 @@ struct Project_user: Codable, Identifiable {
     let retriable_at: String?
     let created_at: String?
     let updated_at: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case occurrence
+        case final_mark
+        case status
+        case validated = "validated?"
+
+        case project
+        case marked_at
+        case marked
+        case cursus_ids
+        case retriable_at
+        case created_at
+        case updated_at
+    }
+    
+//    init(from decoder: any Decoder) throws {
+//        let container = try decoder.container(keyedBy: CodingKeys.self)
+//        validated = try container.decode(String.self, forKey: .validated)
+//    }
 }
+
+//extension Project_user: Decodable {
+//    init(from decoder: Decoder) throws {
+//        let values = try decoder.container(keyedBy: CodingKeys.self)
+//        validated = try values.decode(Bool.self, forKey: .validated)
+//    }
+//}
 
 struct Project: Codable, Identifiable {
     let id: Int
