@@ -29,7 +29,7 @@ func getCurrentCursus(all_cursus: [Cursus_user]) -> Cursus_user? {
 }
 
 func fetchUserList(token: Token, login: String) async -> [UserListItem] {
-    guard let url = URL(string: "https://api.intra.42.fr/v2/campus/1/users?range%5Blogin%5D=\(login.lowercased().trimmingCharacters(in: .whitespaces)),\(login.lowercased().trimmingCharacters(in: .whitespaces))z") else { return [] }
+    guard let url = URL(string: "https://api.intra.42.fr/v2/campus/1/users?range[login]=\(login.lowercased().trimmingCharacters(in: .whitespaces)),\(login.lowercased().trimmingCharacters(in: .whitespaces))z&filter[staff?]=false") else { return [] }
     var request = URLRequest(url: url)
     request.setValue("Bearer \(token.access_token)", forHTTPHeaderField: "Authorization")
     do {
@@ -200,5 +200,6 @@ class IntraAPI: ObservableObject {
 
 import SwiftUI
 #Preview {
-    ProfileView(login: "tajavon")
+    ContentView()
+//    ProfileView(login: "tajavon")
 }

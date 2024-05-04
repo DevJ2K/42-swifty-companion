@@ -21,12 +21,23 @@ struct ProfileView: View {
         return (colorScheme == .light)
     }
     
+    func countCursusProjects(user: User, projects: [Project_user]) -> Int {
+        var count = 0
+        guard let currentCursus = getCurrentCursus(all_cursus: user.cursus_users) else { return count }
+        for project in projects {
+            if (project.cursus_ids.isEmpty == false && project.cursus_ids.contains(currentCursus.cursus_id)) {
+                count += 1;
+            }
+        }
+        return count
+    }
+    
     func isGoodCursusId(user: User, project: Project_user) -> Bool {
         guard let currentCursus = getCurrentCursus(all_cursus: user.cursus_users) else { return false }
         if (project.cursus_ids.isEmpty) {
             return false
         }
-        return currentCursus.cursus_id == project.cursus_ids[0]
+        return project.cursus_ids.contains(currentCursus.cursus_id)
     }
     
     func getLocationColor(location: String) -> Color {
@@ -43,10 +54,20 @@ struct ProfileView: View {
         }
     }
     
-    func dateAgo(dateString: String) -> String {
+    func getCoalition(user: User) -> Coalition? {
+        if let currentCursus = getCurrentCursus(all_cursus: user.cursus_users) {
+            if (user.coalitions != nil && user.coalitions?.isEmpty == false) {
+                return user.coalitions![user.coalitions!.count - 1]
+            }
+        }
+        return nil
+    }
+    
+    func dateAgo(dateString: String?) -> String {
         //        let dateFormatter = ISO8601DateFormatter()
         //        let dateFormatter = DateFormatter()
         //        dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        guard let dateString = dateString else { return ("Unavailable") }
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
@@ -89,11 +110,8 @@ struct ProfileView: View {
                 
                 if let user = user {
                     ZStack {
-                        if (user.coalitions != nil) {
-                            //                Color.black
-                            //                    .scaledToFill()
-                            //                    .ignoresSafeArea(.all)
-                            AsyncImage(url: URL(string: user.coalitions![user.coalitions!.count - 1].cover_url)) { image in
+                        if let coalition = getCoalition(user: user) {
+                            AsyncImage(url: URL(string: coalition.cover_url)) { image in
                                 image
                                     .resizable()
                                     .scaledToFill()
@@ -159,15 +177,20 @@ struct ProfileView: View {
                             
                             // Level Bar
                             if let currentCursus = getCurrentCursus(all_cursus: user.cursus_users) {
-                                UserLevelBar(level: currentCursus.level)
-                                    .padding(.vertical, 6)
+                                if let coalition = getCoalition(user: user) {
+                                    UserLevelBar(level: currentCursus.level, color: Color(hex: coalition.color))
+                                        .padding(.vertical, 6)
+                                } else {
+                                    UserLevelBar(level: currentCursus.level)
+                                        .padding(.vertical, 6)
+                                }
                             } else {
                                 UserLevelBar(level: -1)
                                     .padding(.vertical, 6)
                             }
                             
                             // User Stat Dash
-                            UserStatDash(wallets: user.wallet, correction_point: user.correction_point, projects_completed: user.projects_users.count)
+                            UserStatDash(wallets: user.wallet, correction_point: user.correction_point, projects_completed: countCursusProjects(user: user, projects: user.projects_users))
                                 .padding()
                             
                             
@@ -228,7 +251,7 @@ struct ProfileView: View {
                                             if (project.status == "finished") {
                                                 HStack {
                                                     Text("\(project.project.name) - ")
-                                                    + Text("\(dateAgo(dateString: project.marked_at!))").bold()
+                                                    + Text("\(dateAgo(dateString: project.marked_at))").bold()
                                                     
                                                     Spacer()
                                                     Text("\(project.final_mark ?? 0)")
@@ -263,7 +286,14 @@ struct ProfileView: View {
                                             VStack {
                                                 Text(skill.name)
                                                     .foregroundStyle(.white)
-                                                SkillLevelBar(level: skill.level)
+                                                
+                                                if let coalition = getCoalition(user: user) {
+                                                    SkillLevelBar(level: skill.level, color: Color(hex: coalition.color))
+                                                        .padding(.vertical, 6)
+                                                } else {
+                                                    UserLevelBar(level: skill.level)
+                                                        .padding(.vertical, 6)
+                                                }
                                             }
                                             .frame(maxWidth: .infinity)
                                             
@@ -300,7 +330,7 @@ struct ProfileView: View {
             
         }
         .onAppear {
-            let debug = false
+            let debug = true
             if (debug) {
                 user = User(id: 1, email: "tajavon@student.42.fr", login: "tajavon", phone: "hidden", correction_point: 667, pool_month: "september", pool_year: "2023", location: "made-f0Br5s3", image: User_image(link: "https://cdn.intra.42.fr/users/75d7dbdc6a8da11f1a4fc38f0a641caf/tajavon.jpg", versions: User_image_version(large: "https://cdn.intra.42.fr/users/6ba29f06e26937c2fe7c6f193d22212d/large_tajavon.jpg", medium: "https://cdn.intra.42.fr/users/9db1bddfd3b1ad6cc7828e46f6d55af6/medium_tajavon.jpg", small: "https://cdn.intra.42.fr/users/4c23a85209107ba6f6c6e0f3baeacd82/small_tajavon.jpg", micro: "https://cdn.intra.42.fr/users/efe404a25dc50e94739d9d661d704606/micro_tajavon.jpg")), wallet: 14062005, projects_users: [
                     Project_user(id: 3647453, occurrence: 0, final_mark: 100, status: "finished", validated: true, project: Project(id: 2360, name: "Mobile - 5 - Manage data and display", slug: "mobile-5-manage-data-and-display"), marked_at: "2024-04-20T16:24:42.913Z", marked: true, cursus_ids: [21], retriable_at: "2024-04-20T16:24:43.318Z", created_at: "2024-04-20T12:50:19.512Z", updated_at: "2024-04-22T13:15:48.627Z"),
@@ -317,7 +347,7 @@ struct ProfileView: View {
                     Project_user(id: 3506284, occurrence: 0, final_mark: 110, status: "finished", validated: true, project: Project(id: 1983, name: "Inception", slug: "inception"), marked_at: "2024-02-07T14:44:25.865Z", marked: true, cursus_ids: [21], retriable_at: "2024-02-10T14:44:26.334Z", created_at: "2024-01-29T09:16:33.336Z", updated_at: "2024-02-07T14:44:26.348Z"),
                     Project_user(id: 3501913, occurrence: 1, final_mark: 100, status: "finished", validated: true, project: Project(id: 2309, name: "CPP Module 09", slug: "cpp-module-09"), marked_at: "2024-01-30T15:36:37.591Z", marked: true, cursus_ids: [21], retriable_at: "2024-01-31T15:36:38.071Z", created_at: "2024-01-25T16:57:29.008Z", updated_at: "2024-01-30T15:36:38.090Z"),
                     Project_user(id: 3498188, occurrence: 0, final_mark: 100, status: "finished", validated: true, project: Project(id: 1346, name: "CPP Module 08", slug: "cpp-module-08"), marked_at: "2024-01-25T16:57:09.693Z", marked: true, cursus_ids: [21], retriable_at: "2024-01-26T16:57:09.723Z", created_at: "2024-01-24T12:44:46.199Z", updated_at: "2024-01-25T16:57:09.735Z")
-                ], cursus_users: [Cursus_user(grade: nil, level: 9.57, cursus_id: 9, skills: [Skill(id: 4, name: "Unix", level: 10.83)]), Cursus_user(grade: "Member", level: 11.6, cursus_id: 21, skills: [Skill(id: 3, name: "Rigor", level: 7.9), Skill(id: 9, name: "Strong", level: 7.01), Skill(id: 6, name: "Web", level: 7.03), Skill(id: 10, name: "Network & system administration", level: 7.0), Skill(id: 17, name: "Object-oriented programming", level: 6.16), Skill(id: 2, name: "Imperative programming", level: 5.07)])], coalitions: [Coalition(id: 107, name: "La Heap", slug: "la-heap", image_url: "https://cdn.intra.42.fr/coalition/image/107/heap-logo.svg", cover_url: "https://cdn.intra.42.fr/coalition/cover/107/heap-bg-option5.jpg", color: "#00B333", score: 0), Coalition(id: 47, name: "The Order", slug: "42cursus-paris-the-order", image_url: "https://cdn.intra.42.fr/coalition/image/47/order.svg", cover_url: "https://cdn.intra.42.fr/coalition/cover/47/order_background.jpg", color: "#FF6950", score: 505107)])
+                ], cursus_users: [Cursus_user(grade: nil, level: 9.57, cursus_id: 9, skills: [Skill(id: 4, name: "Unix", level: 10.83)]), Cursus_user(grade: "Member", level: 11.6, cursus_id: 21, skills: [Skill(id: 3, name: "Rigor", level: 7.9), Skill(id: 9, name: "Strong", level: 7.01), Skill(id: 6, name: "Web", level: 7.03), Skill(id: 10, name: "Network & system administration", level: 7.98), Skill(id: 17, name: "Object-oriented programming", level: 6.16), Skill(id: 2, name: "Imperative programming", level: 5.07)])], coalitions: [Coalition(id: 107, name: "La Heap", slug: "la-heap", image_url: "https://cdn.intra.42.fr/coalition/image/107/heap-logo.svg", cover_url: "https://cdn.intra.42.fr/coalition/cover/107/heap-bg-option5.jpg", color: "#00B333", score: 0), Coalition(id: 47, name: "The Order", slug: "42cursus-paris-the-order", image_url: "https://cdn.intra.42.fr/coalition/image/47/order.svg", cover_url: "https://cdn.intra.42.fr/coalition/cover/47/order_background.jpg", color: "#FF6950", score: 505107)])
             } else {
                 Task {
                     let fetchedUser = await intraAPI.fetchUserByLogin(login: login)
@@ -332,6 +362,7 @@ struct ProfileView: View {
 
 struct UserLevelBar: View {
     var level: Double
+    var color: Color?
     @State private var levelBarPourcentage = 0.0
     @State private var loadingDuration = 2.0
     
@@ -346,7 +377,7 @@ struct UserLevelBar: View {
                     )
                     .frame(width: geometry.size.width, height: 22)
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(.orange)
+                    .fill(color ?? Color(hex: "#6AA7FF"))
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
                             .stroke(.white, lineWidth: 1)
@@ -388,6 +419,7 @@ struct UserLevelBar: View {
 
 struct SkillLevelBar: View {
     var level: Double
+    var color: Color?
     @State private var levelBarPourcentage = 0.0
     @State private var loadingDuration = 2.0
     
@@ -402,7 +434,8 @@ struct SkillLevelBar: View {
                     )
                     .frame(width: geometry.size.width, height: 16)
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(.orange)
+                    .fill(color ?? Color(hex: "#6AA7FF"))
+                
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
                             .stroke(.white.opacity(0.5), lineWidth: 1)
