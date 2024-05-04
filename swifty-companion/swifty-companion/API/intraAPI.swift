@@ -171,7 +171,9 @@ class IntraAPI: ObservableObject {
 //        return
         print("Fetching users list startswith : \(login)")
         userList = await fetchUserList(token: token, login: login)
-        self.isFetchingUserList = false
+        DispatchQueue.main.async {
+            self.isFetchingUserList = false
+        }
         print("End of fetching users.")
     }
     
@@ -193,7 +195,9 @@ class IntraAPI: ObservableObject {
         }
         user?.coalitions = await fetchUserCoalitions(token: token, login: login)
 //        print("Fetching user : \(user)")
-        self.isFetchingUser = false
+        DispatchQueue.main.async {
+            self.isFetchingUser = false
+        }
         return user
     }
 }
