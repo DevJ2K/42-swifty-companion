@@ -105,6 +105,7 @@ class IntraAPI: ObservableObject {
     static let shared = IntraAPI()
     
     func getToken() async {
+        print("Start to fetching token...")
         guard let envKey = getEnvKey() else {
             print("404: Env key not found.")
             return
@@ -123,7 +124,7 @@ class IntraAPI: ObservableObject {
             let (data, _) = try await URLSession.shared.data(for: request)
             let decoder = JSONDecoder()
             token = try decoder.decode(Token.self, from: data)
-            print(token ?? "Unexist token.")
+            print((token != nil) ? "Token was sucessfully fetch : \(token!)" : "The token doesn't exist.")
         } catch {
             print("Failed while fetching token : \(error)")
         }
@@ -199,7 +200,7 @@ class IntraAPI: ObservableObject {
 //        DispatchQueue.main.async {
 //            self.isFetchingUser = false
 //        }
-        print("USER : \(user)")
+//        print("USER : \(user)")
         return user
     }
 }

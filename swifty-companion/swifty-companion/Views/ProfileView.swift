@@ -137,7 +137,7 @@ struct ProfileView: View {
                                         image
                                             .resizable()
                                             .clipShape(Circle())
-                                            .shadow(color: .white.opacity(0.3), radius: 3, x: 1, y: 1)
+                                            .shadow(color: .white.opacity(0.2), radius: 3, x: 1, y: 1)
                                     } placeholder: {
                                         ProgressView()
                                     }
@@ -154,11 +154,17 @@ struct ProfileView: View {
                                     VStack(alignment: .leading, spacing: 0) {
                                         Text(user.login)
                                             .fontWeight(.bold)
+                                            .font(.title3)
                                             .foregroundStyle(.white)
-                                            .font(.title2)
-                                            .shadow(color: .white.opacity(0.2), radius: 4, x: 1, y: 1)
+                                            .shadow(color: .white.opacity(0.1), radius: 4, x: 1, y: 1)
+                                        Text(user.usual_full_name ?? "Unknown")
+                                            .foregroundStyle(.white)
+                                            .font(.headline)
+//                                            .font(.title2)
+                                            .shadow(color: .white.opacity(0.1), radius: 4, x: 1, y: 1)
                                         Text(user.email ?? "Unknown")
                                             .fontWeight(.light)
+                                            .font(.subheadline)
                                             .foregroundStyle(.white)
                                             .opacity(0.8)
                                         Text(user.location ?? "Unavailable")
@@ -262,6 +268,7 @@ struct ProfileView: View {
                                                             .fontWeight(.bold)
                                                             .foregroundStyle((project.validated != nil && project.validated!) ? .green : .red)
                                                     }
+                                                    .foregroundStyle(.white)
                                                     .padding(.horizontal)
                                                     .padding(.vertical, 4)
                                                     Divider()
@@ -270,6 +277,7 @@ struct ProfileView: View {
                                                 } else if (project.status == "in_progress") {
                                                     HStack {
                                                         Text("\(project.project.name)")
+                                                            .foregroundStyle(.white)
                                                         Spacer()
                                                         Image(systemName: "clock")
                                                             .fontWeight(.bold)
@@ -350,7 +358,9 @@ struct ProfileView: View {
                         }
                         .frame(width: UIScreen.main.bounds.width)
                     }
-                    //            .navigationTitle(user.login)
+//                                .navigationTitle(user.login)
+//                                .preferredColorScheme(.dark)
+//                                .tint(.white)
                     //            .toolbar(.hidden, for: .tabBar)
                     .background(.black)
                 } else {
@@ -377,7 +387,7 @@ struct ProfileView: View {
         .onAppear {
             let debug = false
             if (debug) {
-                user = User(id: 1, email: "tajavon@student.42.fr", login: "tajavon", phone: "hidden", correction_point: 667, pool_month: "september", pool_year: "2023", location: "made-f0Br5s3", image: User_image(link: "https://cdn.intra.42.fr/users/75d7dbdc6a8da11f1a4fc38f0a641caf/tajavon.jpg", versions: User_image_version(large: "https://cdn.intra.42.fr/users/6ba29f06e26937c2fe7c6f193d22212d/large_tajavon.jpg", medium: "https://cdn.intra.42.fr/users/9db1bddfd3b1ad6cc7828e46f6d55af6/medium_tajavon.jpg", small: "https://cdn.intra.42.fr/users/4c23a85209107ba6f6c6e0f3baeacd82/small_tajavon.jpg", micro: "https://cdn.intra.42.fr/users/efe404a25dc50e94739d9d661d704606/micro_tajavon.jpg")), wallet: 14062005, projects_users: [
+                user = User(id: 1, usual_full_name: "Théo Ajavon", email: "tajavon@student.42.fr", login: "tajavon", phone: "hidden", correction_point: 667, pool_month: "september", pool_year: "2023", location: "made-f0Br5s3", image: User_image(link: "https://cdn.intra.42.fr/users/75d7dbdc6a8da11f1a4fc38f0a641caf/tajavon.jpg", versions: User_image_version(large: "https://cdn.intra.42.fr/users/6ba29f06e26937c2fe7c6f193d22212d/large_tajavon.jpg", medium: "https://cdn.intra.42.fr/users/9db1bddfd3b1ad6cc7828e46f6d55af6/medium_tajavon.jpg", small: "https://cdn.intra.42.fr/users/4c23a85209107ba6f6c6e0f3baeacd82/small_tajavon.jpg", micro: "https://cdn.intra.42.fr/users/efe404a25dc50e94739d9d661d704606/micro_tajavon.jpg")), wallet: 14062005, projects_users: [
                     Project_user(id: 3647453, occurrence: 0, final_mark: 100, status: "finished", validated: true, project: Project(id: 2360, name: "Mobile - 5 - Manage data and display", slug: "mobile-5-manage-data-and-display"), marked_at: "2024-04-20T16:24:42.913Z", marked: true, cursus_ids: [21], retriable_at: "2024-04-20T16:24:43.318Z", created_at: "2024-04-20T12:50:19.512Z", updated_at: "2024-04-22T13:15:48.627Z"),
                     Project_user(id: 3648419, occurrence: 0, final_mark: nil, status: "in_progress", validated: false, project: Project(id: 1395, name: "swifty-companion", slug: "42cursus-swifty-companion"), marked_at: nil, marked: false, cursus_ids: [21], retriable_at: nil, created_at: "2024-04-22T07:20:18.216Z", updated_at: "2024-04-22T07:22:26.978Z"),
                     Project_user(id: 3615649, occurrence: 0, final_mark: 100, status: "finished", validated: true, project: Project(id: 2355, name: "Mobile", slug: "mobile"), marked_at: "2024-04-22T07:09:10.894Z", marked: true, cursus_ids: [21], retriable_at: nil, created_at: "2024-03-26T09:35:47.455Z", updated_at: "2024-04-22T07:09:10.903Z"),
@@ -524,5 +534,5 @@ struct SkillLevelBar: View {
 
 #Preview {
     //    ContentView()
-    ProfileView(login: "ibarkia")
+    ProfileView(login: "tajavon")
 }
