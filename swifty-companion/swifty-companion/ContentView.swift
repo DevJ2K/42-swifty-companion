@@ -78,6 +78,7 @@ struct ContentView: View {
                                 .opacity(0.4)
                             Spacer()
                         }
+                        .padding(.horizontal)
                     }
                 } else {
                     VStack {

@@ -199,6 +199,7 @@ class IntraAPI: ObservableObject {
 //        DispatchQueue.main.async {
 //            self.isFetchingUser = false
 //        }
+        print("USER : \(user)")
         return user
     }
 }
