@@ -18,5 +18,8 @@
 </div>
 
 ## Features
-- Using intra 42 API
+- Using intra 42 API : https://api.intra.42.fr/apidoc
 - Background color in search list depending of the user location
+- Background color in user profile depending of the coalition
+- Smooth bar animation
+- Errors handling : API keys, login not found, no internet connection, missing user informations
