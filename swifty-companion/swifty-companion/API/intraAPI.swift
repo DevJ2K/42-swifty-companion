@@ -156,7 +156,7 @@ class IntraAPI: ObservableObject {
     }
     
     func findUsersByLogin(login: String) async {
-        // Update isFetching... loader in DispatchQueue to update the view.
+        // Update isFetchingUserList loader in DispatchQueue to update the view.
         DispatchQueue.main.async {
             self.isFetchingUserList = true
         }
