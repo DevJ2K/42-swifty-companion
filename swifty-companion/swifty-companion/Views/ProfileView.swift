@@ -111,7 +111,7 @@ struct ProfileView: View {
                 if let user = user {
                     ZStack {
                         if let coalition = getCoalition(user: user) {
-//                        if let coalition = getCoalition(user: user) {
+                            //                        if let coalition = getCoalition(user: user) {
                             AsyncImage(url: URL(string: coalition.cover_url)) { image in
                                 image
                                     .resizable()
@@ -160,7 +160,7 @@ struct ProfileView: View {
                                         Text(user.usual_full_name ?? "Unknown")
                                             .foregroundStyle(.white)
                                             .font(.headline)
-//                                            .font(.title2)
+                                        //                                            .font(.title2)
                                             .shadow(color: .white.opacity(0.1), radius: 4, x: 1, y: 1)
                                         Text(user.email ?? "Unknown")
                                             .fontWeight(.light)
@@ -185,7 +185,9 @@ struct ProfileView: View {
                             .padding(.horizontal)
                             
                             // Level Bar
-                            if let currentCursus = getCurrentCursus(all_cursus: user.cursus_users) {
+                            if false {
+                                let currentCursus = getCurrentCursus(all_cursus: user.cursus_users)!
+                                //                            if let currentCursus = getCurrentCursus(all_cursus: user.cursus_users) {
                                 if let coalition = getCoalition(user: user) {
                                     UserLevelBar(level: currentCursus.level, color: Color(hex: coalition.color))
                                         .padding(.vertical, 6)
@@ -358,16 +360,16 @@ struct ProfileView: View {
                         }
                         .frame(width: UIScreen.main.bounds.width)
                     }
-//                                .navigationTitle(user.login)
-//                                .preferredColorScheme(.dark)
-//                                .tint(.white)
+                    //                                .navigationTitle(user.login)
+                    //                                .preferredColorScheme(.dark)
+                    //                                .tint(.white)
                     //            .toolbar(.hidden, for: .tabBar)
                     .background(.black)
                 } else {
                     VStack(spacing: 16) {
                         Image(systemName: "wifi.slash")
                             .opacity(0.7)
-//                                .bold()
+                        //                                .bold()
                             .font(.system(size: 48))
                         VStack {
                             Text("No Internet Connection")
@@ -385,7 +387,7 @@ struct ProfileView: View {
             
         }
         .onAppear {
-            let debug = false
+            let debug = true
             if (debug) {
                 user = User(id: 1, usual_full_name: "Théo Ajavon", email: "tajavon@student.42.fr", login: "tajavon", phone: "hidden", correction_point: 667, pool_month: "september", pool_year: "2023", location: "made-f0Br5s3", image: User_image(link: "https://cdn.intra.42.fr/users/75d7dbdc6a8da11f1a4fc38f0a641caf/tajavon.jpg", versions: User_image_version(large: "https://cdn.intra.42.fr/users/6ba29f06e26937c2fe7c6f193d22212d/large_tajavon.jpg", medium: "https://cdn.intra.42.fr/users/9db1bddfd3b1ad6cc7828e46f6d55af6/medium_tajavon.jpg", small: "https://cdn.intra.42.fr/users/4c23a85209107ba6f6c6e0f3baeacd82/small_tajavon.jpg", micro: "https://cdn.intra.42.fr/users/efe404a25dc50e94739d9d661d704606/micro_tajavon.jpg")), wallet: 14062005, projects_users: [
                     Project_user(id: 3647453, occurrence: 0, final_mark: 100, status: "finished", validated: true, project: Project(id: 2360, name: "Mobile - 5 - Manage data and display", slug: "mobile-5-manage-data-and-display"), marked_at: "2024-04-20T16:24:42.913Z", marked: true, cursus_ids: [21], retriable_at: "2024-04-20T16:24:43.318Z", created_at: "2024-04-20T12:50:19.512Z", updated_at: "2024-04-22T13:15:48.627Z"),
@@ -441,15 +443,24 @@ struct UserLevelBar: View {
                     )
                     .frame(width: geometry.size.width * levelBarPourcentage, height: 22)
                 
+                
                 ZStack(alignment: .center) {
                     RoundedRectangle(cornerRadius: 8)
                         .fill(.black.opacity(0))
                         .frame(width: geometry.size.width, height: 22)
-                    Text("Level \(getFloorValue(nb: level)) - \(getPourcentageOfDecimal(nb: level))%")
-                        .fontWeight(.semibold)
-                        .font(.callout)
-                        .foregroundStyle(.white)
-                        .shadow(color: .black.opacity(0.5), radius: 4, x: 1, y: 1)
+                    if (level != -1) {
+                        Text("Level \(getFloorValue(nb: level)) - \(getPourcentageOfDecimal(nb: level))%")
+                            .fontWeight(.semibold)
+                            .font(.callout)
+                            .foregroundStyle(.white)
+                            .shadow(color: .black.opacity(0.5), radius: 4, x: 1, y: 1)
+                    } else {
+                        Text("No cursus available.")
+                            .fontWeight(.semibold)
+                            .font(.callout)
+                            .foregroundStyle(.white)
+                            .shadow(color: .black.opacity(0.5), radius: 4, x: 1, y: 1)
+                    }
                 }
             }
             .onAppear {
