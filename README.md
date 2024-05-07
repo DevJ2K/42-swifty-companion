@@ -23,3 +23,6 @@
 - Background color in user profile depending of the coalition
 - Smooth bar animation
 - Errors handling : API keys, login not found, no internet connection, missing user informations
+
+## Next features
+- Leaderboard
